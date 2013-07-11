@@ -1,0 +1,25 @@
+{% extends 'wishlist/detail_base.html' %}
+
+{% block header %}{{ block.super }} [Edit]{% endblock %}
+
+{% block main %}
+<h4>Name: </h4>
+{{ object.name }}
+<h4>Description: </h4>
+{{ object.description }}
+<h4>Products: </h4>
+      <table class='datagrid'>
+        <tr>
+          <th>Name</th>
+          <th>Supplier</th>
+          <th>Url</th>
+        </tr>
+        {% for pr in object.product_set.all %}
+        <tr>
+          <td>{{ pr.name }}</td>
+          <td>{{ pr.supplier }}</td>
+          <td><a href="{{ pr.url }}">{{ pr.url }}</a></td>
+        </tr>
+        {% endfor %}
+      </table>
+{% endblock %}

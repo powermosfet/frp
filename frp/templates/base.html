@@ -1,0 +1,37 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{% block caption %}Family resource planning{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+  </head>
+  <body>
+    <div id="wrapper">
+      <header>
+      <h1>Family resource planning</h1>
+      </header>
+      <nav>
+      <ul>
+        <a href="{% url 'wishlist' %}">   <li>Wishlist  </li></a>
+        <a href="{% url 'budget_main' %}"><li>Budget    </li></a>
+      </ul>
+      </nav>
+      <div id="container">
+      <section>
+      <article>
+      <h2>{% block header %}{% endblock %}</h2>
+      <ul class="appmenu">{% block appmenu %}{% endblock %}</ul>
+      {% block main %}The main section is empty{% endblock %}
+      </article>
+      </section>
+      <aside>
+      {% block side_menu %}
+      {% endblock %}
+      </aside>
+    </div>
+      <footer>
+      This is still a work in progress
+      </footer>
+    </div>
+  </body>
+</html>

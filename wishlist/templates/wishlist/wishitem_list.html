@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load filters %}
+
+{% block caption %}Wishlist | {{ block.super }}{% endblock %}
+
+{% block header %}Wishlist{% endblock %}
+{% block appmenu %}
+<li><a href="">[current] </a></li>
+<li><a href="">[bought]  </a></li>
+<li><a href="">[rejected]</a></li>
+{% endblock %}
+
+{% block main %}
+      <table class='datagrid'>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Min cost</th>
+          <th>Max cost</th>
+        </tr>
+        {% for wi in object_list %}
+        <tr>
+              <td><a href="{% url 'view_wishitem' wi.pk %}">{{ wi.name }}</a></td>
+          <td>{{ wi.description }}</td>
+          <td class='currencyDisplay'>{{ wi.maxcost|two_decimals }}</td>
+          <td class='currencyDisplay'>{{ wi.mincost|two_decimals }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td colspan="4"
+              class="dgFooter">
+              <a href="mock.url">Add an item</a></td>
+        </tr>
+      </table>
+{% endblock %}
