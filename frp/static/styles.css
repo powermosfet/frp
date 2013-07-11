@@ -20,16 +20,22 @@ h3 {
 
 .select {
 	width: 100%;
+	margin:			0.2em 0em;
 }
 
 .textbox {
 	// background: #af9173;
+	margin:			0.2em 0em;
 	width: 100%
 }
 
 .addbutton {
-	margin:			0em 0.2em;
-	width: 			50%;
+	margin:			0.2em 0em;
+	width: 			2.5em;
+}
+
+.separator {
+	width: 		0.4em;
 }
 
 body {
@@ -105,6 +111,10 @@ aside p {
 aside li {
 	display:	block;
 	list-style:	none;
+}
+
+aside table {
+	width:	100%;
 }
 
 ul.appmenu {

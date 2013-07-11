@@ -6,7 +6,7 @@ class Budget(models.Model):
     description = models.CharField(max_length = 30)
 
     def result(self):
-        return sum(x.amount_per_month() for x in self.record_set.all())
+        return Decimal(sum(x.amount_per_month() for x in self.record_set.all()))
 
     def __unicode__(self):
         return self.description

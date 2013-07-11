@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block main %}
-      <h3>{{ object }} [{{ object.timestamp }}]</h3>
+      <h3>{{ object }} [{{ object.timestamp|date:"SHORT_DATE_FORMAT" }}]</h3>
       <table class='datagrid'>
         <tr>
           <th>Category</th>
@@ -59,14 +59,26 @@
     {% endfor %}
     <li>
       <form action='{% url 'category_create' %}' method ='POST'>{% csrf_token %}
-        <select class='select' name='parent' >
-          <option value=''></option>
-          {% for cat in categories %}
-          <option value='{{ cat.pk }}'>{{ cat }}</option>
-          {% endfor %}
-        </select>
-        <input type='text' class='textbox' name='name' />
-        <button type='submit' class='addbutton' name='add'>Add</button>
+        <table>
+          <tr>
+            <td>
+              <select class='select' name='parent' >
+                <option value=''></option>
+                {% for cat in categories %}
+                <option value='{{ cat.pk }}'>{{ cat }}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td class='separator' />
+            <td>
+              <input type='text' class='textbox' name='name' />
+            </td>
+            <td class='separator' />
+            <td>
+              <button type='submit' class='addbutton' name='add'>Add</button>
+            </td>
+          </tr>
+        </table>
       </form>
     </li>
   </ul>
@@ -79,8 +91,17 @@
     {% endfor %}
     <li>
       <form action='{% url 'budget_create' %}' method ='POST'>{% csrf_token %}
-        <input type='text' class='textbox' name='description' />
-        <button type='submit' class='addbutton' name='add'>Add</button>
+        <table>
+          <tr>
+            <td>
+              <input type='text' class='textbox' name='description' />
+            </td>
+            <td class='separator' />
+            <td>
+              <button type='submit' class='addbutton' name='add'>Add</button>
+            </td>
+          </tr>
+        </table>
       </form>
     </li>
   </ul>
