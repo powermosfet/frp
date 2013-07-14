@@ -6,5 +6,6 @@ urlpatterns = patterns('',
     url(r'^budget/(?P<pk>\d+)/$', BudgetView.as_view(), name='budget'),
     url(r'^budget/create/$', BudgetCreate.as_view(), name='budget_create'),
     url(r'^category/create/$', CategoryCreate.as_view(), name='category_create'),
-    url(r'^record/create/$', RecordCreate.as_view(), name='record_create'),
+    url(r'^entry/create/$', EntryCreate.as_view(), name='entry_create'),
+
 )

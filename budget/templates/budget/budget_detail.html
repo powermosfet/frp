@@ -18,12 +18,12 @@
           <th>Payments per year</th>
           <th class='currencyDisplay'>Per month</th>
         </tr>
-        {% for rec in object.record_set.all %}
+        {% for entry in object.entry_set.all %}
         <tr>
-          <td>{{ rec.category }}</td>
-          <td class='currencyDisplay'>{{ rec.amount|two_decimals }}</td>
-          <td>{{ rec.payments_per_year }}</td>
-          <td class='currencyDisplay'>{{ rec.amount_per_month|two_decimals }}</td>
+          <td>{{ entry.category }}</td>
+          <td class='currencyDisplay'>{{ entry.amount|two_decimals }}</td>
+          <td>{{ entry.payments_per_year }}</td>
+          <td class='currencyDisplay'>{{ entry.amount_per_month|two_decimals }}</td>
         </tr>
         {% endfor %}
         <tr>
@@ -33,7 +33,7 @@
             <td class='currencyDisplay'>{{ object.result|two_decimals }}</td>
         </tr>
         <tr>
-          <form action='{% url 'record_create' %}' method='POST'>{% csrf_token %}
+          <form action='{% url 'entry_create' %}' method='POST'>{% csrf_token %}
             <input name='budget' type='hidden' value='{{ object.pk }}' />
             <td>
               <select class='select' class='select' name='category' >

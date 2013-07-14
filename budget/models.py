@@ -6,12 +6,12 @@ class Budget(models.Model):
     description = models.CharField(max_length = 30)
 
     def result(self):
-        return Decimal(sum(x.amount_per_month() for x in self.record_set.all()))
+        return Decimal(sum(x.amount_per_month() for x in self.entry_set.all()))
 
     def __unicode__(self):
         return self.description
 
-class Record(models.Model):
+class Entry(models.Model):
     category = models.ForeignKey('Category')
     amount = models.DecimalField(max_digits = 10, decimal_places = 2)
     payments_per_year = models.IntegerField()
@@ -37,3 +37,16 @@ class Category(models.Model):
             return u"{0}".format(self.name)
         else:
             return u"{0}/{1}".format(self.parent.__unicode__(), self.name)
+
+class Transaction(models.Model):
+    category = models.ForeignKey('Category')
+    comment = models.CharField(max_length=80)
+    amount = models.DecimalField(max_digits = 10, decimal_places = 2)
+    timestamp = models.DateTimeField(auto_now_add = True)
+
+    def __unicode__(self):
+        return "{0:%Y.%m.%d %H:%M:%S}: {1} - {2} ({3})".format(
+                self.timestamp,
+                self.category,
+                self.amount, 
+                self.comment)

@@ -34,15 +34,15 @@ class CategoryCreate(CreateView):
     def get_success_url(self):
         return reverse('budget_main')
 
-class RecordCreate(CreateView):
-    model = Record
+class EntryCreate(CreateView):
+    model = Entry
     fields = ['category', 'amount',
               'payments_per_year', 'budget']
 
     def form_valid(self, form):
         if form.instance.budget is not None:
             self.budget = form.instance.budget.pk
-        return super(RecordCreate, self).form_valid(form)
+        return super(EntryCreate, self).form_valid(form)
 
     def get_success_url(self):
         return reverse('budget', kwargs={'pk': self.budget})
