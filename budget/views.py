@@ -20,6 +20,9 @@ class BudgetView(DetailView):
         context['budgets'] = Budget.objects.all()
         return context
 
+class AccountingView(ListView):
+    model = Transaction
+
 class BudgetCreate(CreateView):
     model = Budget
     fields = ['description']

@@ -1,0 +1,11 @@
+
+{% extends 'base.html' %}
+
+{% block caption %}Budget | {{ block.super }}{% endblock %}
+
+{% block header %}Budget{% endblock %}
+{% block appmenu %}
+<li><a href="{% url 'budget_main' %}">[budget]</a></li>
+<li><a href="{% url 'accounting_main' %}">[accounting]</a></li>
+{% endblock %}
+
