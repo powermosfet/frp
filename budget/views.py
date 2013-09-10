@@ -3,6 +3,7 @@ from django.views.generic import *
 from budget.models import *
 from django.http import HttpResponseServerError
 from django.core.urlresolvers import reverse
+from datetime import date
 
 class BudgetView(DetailView):
     model = Budget
@@ -22,6 +23,21 @@ class BudgetView(DetailView):
 
 class AccountingView(ListView):
     model = Transaction
+    year = date.today().year
+    month = date.today().month
+
+    def get(self, *args, **kwargs):
+        if 'month' in kwargs.keys():
+            self.month = kwargs['month']
+        if 'year' in kwargs.keys():
+            self.year = kwargs['year']
+        return super(AccountingView, self).get(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(AccountingView, self).get_context_data(**kwargs)
+        context['year'] = self.year
+        context['month'] = self.month
+        return context
 
 class BudgetCreate(CreateView):
     model = Budget

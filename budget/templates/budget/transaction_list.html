@@ -3,100 +3,10 @@
 {% load filters %}
 
 {% block main %}
-      <h3>&lt;- {{ month }} -&gt;</h3>
-      <table class='datagrid'>
-        <tr>
-          <th>Category</th>
-          <th class='currencyDisplay'>Amount</th>
-          <th>Payments per year</th>
-          <th class='currencyDisplay'>Per month</th>
-        </tr>
-        {% for entry in object.entry_set.all %}
-        <tr>
-          <td>{{ entry.category }}</td>
-          <td class='currencyDisplay'>{{ entry.amount|two_decimals }}</td>
-          <td>{{ entry.payments_per_year }}</td>
-          <td class='currencyDisplay'>{{ entry.amount_per_month|two_decimals }}</td>
-        </tr>
-        {% endfor %}
-        <tr>
-          <td >Result</td>
-          <td />
-          <td />
-            <td class='currencyDisplay'>{{ object.result|two_decimals }}</td>
-        </tr>
-        <tr>
-          <form action='{% url 'entry_create' %}' method='POST'>{% csrf_token %}
-            <input name='budget' type='hidden' value='{{ object.pk }}' />
-            <td>
-              <select class='select' class='select' name='category' >
-                {% for cat in categories %}
-                <option value='{{ cat.pk }}'>{{ cat }}</option>
-                {% endfor %}
-              </select>
-            </td>
-            <td class='currencyDisplay'><input name='amount' class='input' type='text' /></td>
-            <td><input name='payments_per_year' class='input' type='text' /></td>
-            <td class='currencyDisplay'><button type='submit' class='addbutton'>Add</button></td>
-          </form>
-        </tr>
-      </table>
+    <h3>&lt;- {{ month|month }} {{ year }} -&gt;</h3>
 {% endblock %}
 
 {% block side_menu %}
 <p>
-  <h3>Categories:</h3>
-  <ul>
-    {% for cat in categories %}
-      <li>{{ cat }}</li>
-    {% endfor %}
-    <li>
-      <form action='{% url 'category_create' %}' method ='POST'>{% csrf_token %}
-        <table>
-          <tr>
-            <td>
-              <select class='select' name='parent' >
-                <option value=''></option>
-                {% for cat in categories %}
-                <option value='{{ cat.pk }}'>{{ cat }}</option>
-                {% endfor %}
-              </select>
-            </td>
-            <td class='separator' />
-            <td>
-              <input type='text' class='textbox' name='name' />
-            </td>
-            <td class='separator' />
-            <td>
-              <button type='submit' class='addbutton' name='add'>Add</button>
-            </td>
-          </tr>
-        </table>
-      </form>
-    </li>
-  </ul>
-</p>
-<p>
-  <h3>Budgets:</h3>
-  <ul>
-    {% for b in budgets %}
-    <a href='{% url 'budget' b.pk %}'><li>{{ b }}</li></a>
-    {% endfor %}
-    <li>
-      <form action='{% url 'budget_create' %}' method ='POST'>{% csrf_token %}
-        <table>
-          <tr>
-            <td>
-              <input type='text' class='textbox' name='description' />
-            </td>
-            <td class='separator' />
-            <td>
-              <button type='submit' class='addbutton' name='add'>Add</button>
-            </td>
-          </tr>
-        </table>
-      </form>
-    </li>
-  </ul>
 </p>
 {% endblock %}
