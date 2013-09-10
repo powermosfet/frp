@@ -78,7 +78,7 @@ nav li {
 }
 
 #container {
-	max-width:			100%;
+	width:				100%;
 	display:			-moz-box;
 	display:			-webkit-box;
 	-moz-box-orient:	horizontal;
@@ -99,7 +99,10 @@ article {
 }
 
 aside {
-	width:		5%;
+	display:	block;
+	width:		15em;
+	-moz-align:	stretch;
+	-webkit-align:	stretch;
 	padding:	0.5em;
 	background:	#9274b0;
 	opacity:	0.7;
