@@ -3,7 +3,7 @@ from django.views.generic import *
 from budget.models import *
 from django.http import HttpResponseServerError
 from django.core.urlresolvers import reverse
-from datetime import date
+from datetime import *
 
 class BudgetView(DetailView):
     model = Budget
@@ -37,7 +37,32 @@ class AccountingView(ListView):
         context = super(AccountingView, self).get_context_data(**kwargs)
         context['year'] = self.year
         context['month'] = self.month
+        context['calendar'] = self.build_calendar()
+        context['categories'] = Category.objects.order_by('category')
         return context
+
+    def build_calendar(self):
+        calendar = []
+        week = [ 0 for x in range(7) ]
+        one_day = timedelta(1)
+        year = int(self.year)
+        month = int(self.month)
+        for d in daterange(date(year, month, 1), date(year, month + 1, 1)):
+            week[d.weekday()] = d.day
+            if d.weekday() >= 6:
+                calendar.append(week)
+                week = [ 0 for x in range(7) ]
+        if any([ x != 0 for x in week ]):
+            calendar.append(week)
+        return calendar
+
+class TransactionCreate(CreateView):
+    model = Transaction
+    fields = ['date', 'category', 'amount', 'comment']
+    template = ''
+
+    def get_success_url(self):
+        return reverse('accounting', year, month)
 
 class BudgetCreate(CreateView):
     model = Budget
@@ -65,3 +90,7 @@ class EntryCreate(CreateView):
 
     def get_success_url(self):
         return reverse('budget', kwargs={'pk': self.budget})
+
+def daterange(start_date, end_date):
+    for n in range(int ((end_date - start_date).days)):
+        yield start_date + timedelta(n)

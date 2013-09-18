@@ -1,9 +1,62 @@
 {% extends 'budget_base.html' %}
 
 {% load filters %}
+{% load static %}
+
+{% block head %}
+<script src="{% static 'inject_date.js' %}" ></script>
+<script >month = {{ month }};year = {{ year }};</script>
+{% endblock %}
 
 {% block main %}
-    <h3>&lt;- {{ month|month }} {{ year }} -&gt;</h3>
+<h3><a href="{% url 'accounting' year month|add:-1 %}">&lt;-</a>
+    {{ month|month }} {{ year }}
+    <a href="{% url 'accounting' year month|add:1 %}">-&gt;</a></h3>
+    <div id='transaction_entry'>
+        <div>
+            <form action="{% url 'create_transaction' year month %}" method="post">{% csrf_token %}
+                <p>Date:</p>
+                <input name="date" type="text" id="date_field" />
+                <p>Category:</p>
+                <select class='select' class='select' name='category' >
+                  {% for cat in categories %}
+                  <option value='{{ cat.pk }}'>{{ cat }}</option>
+                  {% endfor %}
+                </select>
+                <p>Amount:</p>
+                <input name="amount" type="number" />
+                <p>Comment:</p>
+                <input name="comment" type="text" />
+                <input type="submit" value="Save" />
+            </form>
+        </div>
+        <div id='calendar'>
+            <table>
+                <tr>
+                    <th>M</th>
+                    <th>T</th>
+                    <th>W</th>
+                    <th>T</th>
+                    <th>F</th>
+                    <th>S</th>
+                    <th>S</th>
+                </tr>
+                {% for week in calendar %}
+                <tr>
+                    {% for day in week %}
+                    {% if day != 0 %}
+                    <td id="day{{ day }}">
+                        {{ day }}
+                        {% else %}
+                        <td>
+                            {% endif %}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+            </table>
+        </div>
+    </div>
 {% endblock %}
 
 {% block side_menu %}

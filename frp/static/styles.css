@@ -154,3 +154,21 @@ footer {
 .currencyDisplay {
 	text-align:	right;
 }
+
+#calendar {
+	margin-left:	3em;
+}
+
+#calendar td {
+	cursor: 	pointer;
+	width:		1.5em;
+	height:		1.5em;
+	border:		1px solid black;
+	margin:		0;
+	text-align:	center;
+}
+
+#transaction_entry {
+	display:			-moz-box;
+	-moz-box-orient:	horizontal;
+}
