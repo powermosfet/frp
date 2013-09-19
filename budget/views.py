@@ -59,7 +59,7 @@ class AccountingView(ListView):
 class TransactionCreate(CreateView):
     model = Transaction
     fields = ['date', 'category', 'amount', 'comment']
-    template = ''
+    template = 'budget/transaction_list.html'
 
     def get_success_url(self):
         return reverse('accounting', year, month)

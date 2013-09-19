@@ -1,9 +1,9 @@
-{% extends 'budget_base.html' %}
+{% extends 'budget/budget_base.html' %}
 
 {% load filters %}
 
 {% block main %}
-      <h3>{{ object }} [{{Â object.timestamp|date:"SHORT_DATE_FORMAT" }}]</h3>
+      <h3>{{ object }} [{{ object.timestamp|date:"SHORT_DATE_FORMAT" }}]</h3>
       <table class='datagrid'>
         <tr>
           <th>Category</th>
