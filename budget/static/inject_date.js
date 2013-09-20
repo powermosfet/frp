@@ -1,4 +1,6 @@
-function inject_date(n) {
+function inject_date(e) {
+	tag = e.target;
+	n = tag.textContent.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 	input = document.getElementById('date_field');
 	input.value = zero_pad(n) + '.' + zero_pad(month) + '.' + year;
 }
@@ -11,16 +13,8 @@ function zero_pad(n) {
 	}
 }
 
-function inject_date_create_func(n) {
-	return function() { inject_date( n ); };
-}
-
 function inject_date_init() {
-	for(i = 1; i <= 31; i++) {
-		linkId = 'day' + i;
-		e = document.getElementById(linkId);
-		e.addEventListener('click', inject_date_create_func(i) );
-	}
+	$('.day').click(inject_date);
 }
 
 window.addEventListener('load', inject_date_init);
