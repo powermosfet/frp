@@ -171,4 +171,5 @@ footer {
 #transaction_entry {
 	display:			-moz-box;
 	-moz-box-orient:	horizontal;
+    margin:             2em 0;
 }
