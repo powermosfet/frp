@@ -14,7 +14,7 @@
     <a href="{% url 'accounting' year month|add:1 %}">-&gt;</a></h3>
     <div id='transaction_entry'>
         <div>
-            <form action="{% url 'create_transaction' year month %}" method="post">{% csrf_token %}
+            <form action="{% url 'accounting' year month %}" method="post">{% csrf_token %}
                 <p>Date:</p>
                 <input name="date" type="text" id="date_field" />
                 <p>Category:</p>

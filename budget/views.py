@@ -1,7 +1,7 @@
 # Create your views here.
 from django.views.generic import *
 from budget.models import *
-from django.http import HttpResponseServerError
+from django.http import *
 from django.core.urlresolvers import reverse
 from datetime import *
 
@@ -33,6 +33,17 @@ class AccountingView(ListView):
             self.year = kwargs['year']
         return super(AccountingView, self).get(*args, **kwargs)
 
+    def post(self, *args, **kwargs):
+        post = args[0].POST
+        tr = Transaction()
+        tr.date = post['date']
+        tr.category = Category.objects.filter(pk = post['category'])[0]
+        tr.amount = post['amount']
+        tr.comment = post['comment']
+        tr.save()
+        url = reverse('accounting', kwargs={'year': self.year, 'month': self.month})
+        return HttpResponseRedirect(url)
+
     def get_context_data(self, **kwargs):
         context = super(AccountingView, self).get_context_data(**kwargs)
         context['year'] = self.year
@@ -55,14 +66,6 @@ class AccountingView(ListView):
         if any([ x != 0 for x in week ]):
             calendar.append(week)
         return calendar
-
-class TransactionCreate(CreateView):
-    model = Transaction
-    fields = ['date', 'category', 'amount', 'comment']
-    template = 'budget/transaction_list.html'
-
-    def get_success_url(self):
-        return reverse('accounting', year, month)
 
 class BudgetCreate(CreateView):
     model = Budget

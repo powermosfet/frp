@@ -42,11 +42,11 @@ class Transaction(models.Model):
     category = models.ForeignKey('Category')
     comment = models.CharField(max_length=80)
     amount = models.DecimalField(max_digits = 10, decimal_places = 2)
-    timestamp = models.DateTimeField()
+    date = models.DateField()
 
     def __unicode__(self):
-        return "{0:%Y.%m.%d %H:%M:%S}: {1} - {2} ({3})".format(
-                self.timestamp,
+        return "{0}: {1} - {2} ({3})".format(
+                self.date,
                 self.category,
                 self.amount, 
                 self.comment)
