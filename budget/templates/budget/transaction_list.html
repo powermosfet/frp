@@ -18,13 +18,18 @@
                 <p>Date:</p>
                 <input name="date" type="text" id="date_field" />
                 <p>Category:</p>
-                <select class='select' class='select' name='category' >
+                <select class='select' name='category' >
                   {% for cat in categories %}
                   <option value='{{ cat.pk }}'>{{ cat }}</option>
                   {% endfor %}
                 </select>
                 <p>Amount:</p>
                 <input name="amount" type="number" />
+                <p>Type:</p>
+                <select class='select' name='factor' >
+                  <option value='-1'>Expense</option>
+                  <option value='1'>Income</option>
+                </select>
                 <p>Comment:</p>
                 <input name="comment" type="text" />
                 <input type="submit" value="Save" />

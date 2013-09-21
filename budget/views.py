@@ -38,7 +38,7 @@ class AccountingView(ListView):
         tr = Transaction()
         tr.date = post['date']
         tr.category = Category.objects.filter(pk = post['category'])[0]
-        tr.amount = post['amount']
+        tr.amount = int(post['factor']) * float(post['amount'])
         tr.comment = post['comment']
         tr.save()
         url = reverse('accounting', kwargs={'year': self.year, 'month': self.month})
