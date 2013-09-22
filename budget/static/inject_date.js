@@ -2,7 +2,8 @@ function inject_date(e) {
 	tag = e.target;
 	n = tag.textContent.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 	input = document.getElementById('date_field');
-	input.value = zero_pad(n) + '.' + zero_pad(month) + '.' + year;
+    date = new Date(year, month, n);
+	input.value = date.toISOString().substr(0,10);
 }
 
 function zero_pad(n) {

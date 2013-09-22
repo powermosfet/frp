@@ -1,4 +1,3 @@
-# Create your views here.
 from django.views.generic import *
 from budget.models import *
 from django.http import *
@@ -10,7 +9,10 @@ class BudgetView(DetailView):
 
     def get_object(self, queryset=None):
         if 'pk' not in self.kwargs.keys():
-            obj = Budget.objects.order_by('-pk')[0]
+            if Budget.objects.count() > 0:
+                obj = Budget.objects.order_by('-pk')[0]
+            else:
+                obj = Budget()
         else:
             obj = super(BudgetView, self).get_object(queryset)
         return obj
@@ -83,7 +85,7 @@ class CategoryCreate(CreateView):
 
 class EntryCreate(CreateView):
     model = Entry
-    fields = ['category', 'amount',
+    fields = ['category', 'amount', 'factor'
               'payments_per_year', 'budget']
 
     def form_valid(self, form):

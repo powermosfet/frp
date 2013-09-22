@@ -3,7 +3,7 @@
 {% load filters %}
 
 {% block main %}
-      <h3>{{ object }} [{{ object.timestamp|date:"SHORT_DATE_FORMAT" }}]</h3>
+      <h3>{{ object }} [{{ object.timestamp|date:"SHORT_DATE_FORMAT" }}]</h3>
       <table class='datagrid'>
         <tr>
           <th>Category</th>
@@ -35,7 +35,13 @@
                 {% endfor %}
               </select>
             </td>
-            <td class='currencyDisplay'><input name='amount' class='input' type='text' /></td>
+            <td class='currencyDisplay'>
+                <input name='amount' class='input' type='text' />
+                <select name='factor' class='select'>
+                    <option value='-1'>Expense</option>
+                    <option value='1'>Income</option>
+                </select>
+            </td>
             <td><input name='payments_per_year' class='input' type='text' /></td>
             <td class='currencyDisplay'><button type='submit' class='addbutton'>Add</button></td>
           </form>
