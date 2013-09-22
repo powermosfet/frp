@@ -9,9 +9,9 @@
 {% endblock %}
 
 {% block main %}
-<h3><a href="{% url 'accounting' year month|add:-1 %}">&lt;-</a>
+<h3><a href="{% url 'accounting' prev_year prev_month %}">&lt;-</a>
     {{ month|month }} {{ year }}
-    <a href="{% url 'accounting' year month|add:1 %}">-&gt;</a></h3>
+    <a href="{% url 'accounting' next_year next_month %}">-&gt;</a></h3>
     <div id='transaction_entry'>
         <div>
             <form action="{% url 'accounting' year month %}" method="post">{% csrf_token %}

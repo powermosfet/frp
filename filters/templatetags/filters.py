@@ -5,7 +5,11 @@ register = template.Library()
 
 @register.filter('two_decimals')
 def two_decimals(inp):
-    return inp.quantize(Decimal('0.01'))
+    if type(inp) is not Decimal:
+        n = Decimal()
+    else:
+        n = inp
+    return n.quantize(Decimal('0.01'))
 
 @register.filter('month')
 def month(m):

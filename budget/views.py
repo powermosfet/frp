@@ -50,6 +50,11 @@ class AccountingView(ListView):
         context = super(AccountingView, self).get_context_data(**kwargs)
         context['year'] = self.year
         context['month'] = self.month
+        d = date(int(self.year), int(self.month), 15)
+        context['prev_year'] = (d - timedelta(days = 30)).year
+        context['prev_month'] = (d - timedelta(days = 30)).month
+        context['next_year'] = (d + timedelta(days = 30)).year
+        context['next_month'] = (d + timedelta(days = 30)).month
         context['calendar'] = self.build_calendar()
         context['categories'] = Category.objects.order_by('category')
         return context
@@ -60,7 +65,10 @@ class AccountingView(ListView):
         one_day = timedelta(1)
         year = int(self.year)
         month = int(self.month)
-        for d in daterange(date(year, month, 1), date(year, month + 1, 1)):
+        first_day = date(year, month, 1)
+        last_day = first_day + timedelta(days = 31)
+        last_day.replace(day = 1)
+        for d in daterange(first_day, last_day):
             week[d.weekday()] = d.day
             if d.weekday() >= 6:
                 calendar.append(week)
@@ -85,7 +93,7 @@ class CategoryCreate(CreateView):
 
 class EntryCreate(CreateView):
     model = Entry
-    fields = ['category', 'amount', 'factor'
+    fields = ['category', 'amount_abs', 'factor'
               'payments_per_year', 'budget']
 
     def form_valid(self, form):

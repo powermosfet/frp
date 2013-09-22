@@ -13,17 +13,20 @@ class Budget(models.Model):
 
 class Entry(models.Model):
     category = models.ForeignKey('Category')
-    amount = models.DecimalField(max_digits = 10, decimal_places = 2)
+    amount_abs = models.DecimalField(max_digits = 10, decimal_places = 2)
     factor = models.FloatField(default = -1)
     payments_per_year = models.IntegerField()
     budget = models.ForeignKey('Budget')
 
+    def amount(self):
+        return Decimal(float(self.amount_abs) * float(self.factor))
+
     def amount_per_month(self):
-        return Decimal()#self.amount * self.payments_per_year / 12.0 * self.factor)
+        return self.amount() * Decimal(self.payments_per_year / 12.0 )
 
     def __unicode__(self):
         return u"{0}: {1} [{2}x]".format(self.category,
-                                        self.amount,
+                                        self.amount(),
                                         self.payments_per_year)
 
 class Category(models.Model):
