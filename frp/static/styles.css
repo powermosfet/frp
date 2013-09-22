@@ -25,13 +25,26 @@ h3 {
 
 .textbox {
 	// background: #af9173;
-	margin:			0.2em 0em;
+	margin:			0.2em 0.2em 0.2em 0em;
 	width: 100%
 }
 
 .addbutton {
 	margin:			0.2em 0em;
 	width: 			2.5em;
+}
+
+.form-flex {
+    display: -moz-box;
+    display: -webkit-box;
+    -moz-orientation: vertical;
+    width:	100%;
+}
+
+.form-flex-inner {
+    -moz-box-flex: 1;
+    -webkit-box-flex: 1;
+    box-flex: 1;
 }
 
 .separator {
