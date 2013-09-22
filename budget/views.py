@@ -19,7 +19,7 @@ class BudgetView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(BudgetView, self).get_context_data(**kwargs)
-        context['categories'] = Category.objects.order_by('category')
+        context['categories'] = Category.objects.all()
         context['budgets'] = Budget.objects.all()
         return context
 
@@ -56,7 +56,7 @@ class AccountingView(ListView):
         context['next_year'] = (d + timedelta(days = 30)).year
         context['next_month'] = (d + timedelta(days = 30)).month
         context['calendar'] = self.build_calendar()
-        context['categories'] = Category.objects.order_by('category')
+        context['categories'] = Category.objects.all()
         return context
 
     def build_calendar(self):
