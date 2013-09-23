@@ -51,7 +51,7 @@ class Transaction(models.Model):
     date = models.DateField()
 
     def __unicode__(self):
-        return "{0}: {1} - {2} ({3})".format(
+        return u"{0}: {1} - {2} ({3})".format(
                 self.date,
                 self.category,
                 self.amount, 
