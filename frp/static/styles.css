@@ -3,19 +3,27 @@
 	padding:		0;
 	font-family: Perpetua, Baskerville, "Big Caslon", "Palatino Linotype", Palatino, "URW Palladio L", "Nimbus Roman No9 L", serif;;
 	font-size:		1.0em;
+    color: #DDDDDD;
 }
 
-a:link 		{ color: black; text-decoration: none; }
-a:visited 	{ color: black; text-decoration: none; }
+a:link 		{ color: #DDDDDD; text-decoration: none; }
+a:visited 	{ color: #DDDDDD; text-decoration: none; }
 
 h1 {
+    color: #DDDDDD;
 }
 
 h2 {
+    color: #DDDDDD;
 }
 
 h3 {
+    color: #DDDDDD;
 	text-decoration:	underline;
+}
+
+select {
+	background:     #474747;
 }
 
 .select {
@@ -23,13 +31,19 @@ h3 {
 	margin:			0.2em 0em;
 }
 
+input {
+	background:     #474747;
+    color: #DDDDDD;
+}
+
 .textbox {
-	// background: #af9173;
+    color:  black;
 	margin:			0.2em 0.2em 0.2em 0em;
 	width: 100%
 }
 
 .addbutton {
+    color:          black;
 	margin:			0.2em 0em;
 	width: 			2.5em;
 }
@@ -52,28 +66,30 @@ h3 {
 }
 
 body {
-	background: #9274b0;
+    background-image: url('/static/img/pattern8-pattern-72c.png') ;
 	text-align: center;
 }
 
 #wrapper {
 	width:		90%;
+    border-radius:         1em;
 	display</a>:			-moz-box;
 	display</a>:			-webkit-box;
 	-moz-box-orient:	vertical;
 	-webkit-box-orient:	vertical;
 	-moz-box-flex:		1;
 	-webkit-box-flex:	1;
+    max-width:          70em;
 	text-align:	left;
-	background:	#af9173;
+	background:	rgba(0, 0, 0, 0.7);
 	margin:		1em auto;
 	padding:	1em;
-	border:		0.07 solid black;
 }
 
 header {
 	font-size:		1.5em;
 	padding-bottom:	2em;
+opacity: 1;
 }
 
 nav {
@@ -82,12 +98,13 @@ nav {
 nav li {
 	display:	inline-block;
 	list-style:	none;
-	border:		0.071429em solid black;
+	border:		0.071429em solid #DDDDDD;
 	font-weight:bold;
 	padding:	0.1em 0.3em;
 	width:		15%;
-	background:	#74b092;
-	color:		black;
+	background: #474747;
+    opacity:    1;
+	color:		#DDDDDD;
 }
 
 #container {
@@ -117,8 +134,7 @@ aside {
 	-moz-align:	stretch;
 	-webkit-align:	stretch;
 	padding:	0.5em;
-	background:	#9274b0;
-	opacity:	0.7;
+    border: 1px solid #DDDDDD;
 }
 
 aside p {
@@ -145,18 +161,18 @@ ul.appmenu li {
 
 table.datagrid {
 	border-collapse:	collapse;
-	border:		0.071429em solid black;
+	border:		0.071429em solid #DDDDDD;
 	margin:		0.142857em auto;
 	width:		90%;
 }
 table.datagrid td,th {
 	font-family: "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
 	font-size:		0.8em;
-	border:			0.07em solid black;
+	border:			0.07em solid #DDDDDD;
 	padding:		0em 0.5em;
 }
 table.datagrid th {
-	background:	#74b092;
+	background:     #474747;
 }
 
 footer {
@@ -176,7 +192,7 @@ footer {
 	cursor: 	pointer;
 	width:		1.5em;
 	height:		1.5em;
-	border:		1px solid black;
+	border:		1px solid #DDDDDD;
 	margin:		0;
 	text-align:	center;
 }
