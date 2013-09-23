@@ -32,9 +32,11 @@ class Entry(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length = 30)
     parent = models.ForeignKey('Category', blank = True, null = True)
+    string = models.CharField(max_length = 250)
 
-    def string(self):
-        return __unicode__(self)
+    def save(self):
+        self.string = self.__unicode__()
+        super(Category, self).save()
     
     def __unicode__(self):
         if self.parent is None:
