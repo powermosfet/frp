@@ -3,22 +3,22 @@
 	padding:		0;
 	font-family: Perpetua, Baskerville, "Big Caslon", "Palatino Linotype", Palatino, "URW Palladio L", "Nimbus Roman No9 L", serif;;
 	font-size:		1.0em;
-    color: #DDDDDD;
+    color: #F7F3E2;
 }
 
-a:link 		{ color: #DDDDDD; text-decoration: none; }
-a:visited 	{ color: #DDDDDD; text-decoration: none; }
+a:link 		{ color: #F7F3E2; text-decoration: none; }
+a:visited 	{ color: #F7F3E2; text-decoration: none; }
 
 h1 {
-    color: #DDDDDD;
+    color: #F7F3E2;
 }
 
 h2 {
-    color: #DDDDDD;
+    color: #F7F3E2;
 }
 
 h3 {
-    color: #DDDDDD;
+    color: #F7F3E2;
 	text-decoration:	underline;
 }
 
@@ -33,7 +33,7 @@ select {
 
 input {
 	background:     #474747;
-    color: #DDDDDD;
+    color: #F7F3E2;
 }
 
 .textbox {
@@ -52,6 +52,7 @@ input {
     display: -moz-box;
     display: -webkit-box;
     -moz-orientation: vertical;
+    -webkit-orientation: vertical;
     width:	100%;
 }
 
@@ -73,8 +74,8 @@ body {
 #wrapper {
 	width:		90%;
     border-radius:         1em;
-	display</a>:			-moz-box;
-	display</a>:			-webkit-box;
+	display:			-moz-box;
+	display:			-webkit-box;
 	-moz-box-orient:	vertical;
 	-webkit-box-orient:	vertical;
 	-moz-box-flex:		1;
@@ -98,13 +99,13 @@ nav {
 nav li {
 	display:	inline-block;
 	list-style:	none;
-	border:		0.071429em solid #DDDDDD;
+	border:		0.071429em solid #F7F3E2;
 	font-weight:bold;
 	padding:	0.1em 0.3em;
 	width:		15%;
 	background: #474747;
     opacity:    1;
-	color:		#DDDDDD;
+	color:		#F7F3E2;
 }
 
 #container {
@@ -134,7 +135,7 @@ aside {
 	-moz-align:	stretch;
 	-webkit-align:	stretch;
 	padding:	0.5em;
-    border: 1px solid #DDDDDD;
+    border: 1px solid #F7F3E2;
 }
 
 aside p {
@@ -161,14 +162,14 @@ ul.appmenu li {
 
 table.datagrid {
 	border-collapse:	collapse;
-	border:		0.071429em solid #DDDDDD;
+	border:		0.071429em solid #F7F3E2;
 	margin:		0.142857em auto;
 	width:		90%;
 }
 table.datagrid td,th {
 	font-family: "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
 	font-size:		0.8em;
-	border:			0.07em solid #DDDDDD;
+	border:			0.07em solid #F7F3E2;
 	padding:		0em 0.5em;
 }
 table.datagrid th {
@@ -192,13 +193,15 @@ footer {
 	cursor: 	pointer;
 	width:		1.5em;
 	height:		1.5em;
-	border:		1px solid #DDDDDD;
+	border:		1px solid #F7F3E2;
 	margin:		0;
 	text-align:	center;
 }
 
 #transaction_entry {
 	display:			-moz-box;
+	display:			-webkit-box;
 	-moz-box-orient:	horizontal;
+	-webkit-box-orient:	horizontal;
     margin:             2em 0;
 }

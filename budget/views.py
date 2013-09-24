@@ -89,7 +89,7 @@ class CategoryCreate(CreateView):
     fields = ['name', 'parent']
 
     def get_success_url(self):
-        return reverse('budget_main')
+        return reverse('budget', self.year, self.month)
 
 class EntryCreate(CreateView):
     model = Entry
