@@ -1,0 +1,3 @@
+#! /bin/bash
+
+git ls-files -z | rsync --files-from - --copy-links -av0 . asmund@192.168.1.138:/home/asmund/web/frp/
