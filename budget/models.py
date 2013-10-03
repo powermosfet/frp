@@ -32,7 +32,7 @@ class Entry(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length = 30)
     parent = models.ForeignKey('Category', blank = True, null = True)
-    string = models.CharField(max_length = 250)
+    string = models.CharField(max_length = 250, editable = False)
 
     def save(self):
         self.string = self.__unicode__()
@@ -46,7 +46,7 @@ class Category(models.Model):
 
 class Transaction(models.Model):
     category = models.ForeignKey('Category')
-    comment = models.CharField(max_length=80)
+    comment = models.CharField(max_length=80, blank=True)
     amount = models.DecimalField(max_digits = 10, decimal_places = 2)
     date = models.DateField()
 

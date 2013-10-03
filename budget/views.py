@@ -1,7 +1,8 @@
 from django.views.generic import *
+from django import forms
 from budget.models import *
 from django.http import *
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from datetime import *
 
 class BudgetView(DetailView):
@@ -23,40 +24,16 @@ class BudgetView(DetailView):
         context['budgets'] = Budget.objects.all()
         return context
 
-class AccountingView(ListView):
+class AccountingView(CreateView):
+    template_name = 'budget/transaction_list.html'
     model = Transaction
     year = date.today().year
     month = date.today().month
 
-    def get(self, *args, **kwargs):
-        if 'month' in kwargs.keys():
-            self.month = kwargs['month']
-        if 'year' in kwargs.keys():
-            self.year = kwargs['year']
-        return super(AccountingView, self).get(*args, **kwargs)
-
-    def post(self, *args, **kwargs):
-        post = args[0].POST
-        tr = Transaction()
-        tr.date = post['date']
-        tr.category = Category.objects.filter(pk = post['category'])[0]
-        tr.amount = int(post['factor']) * float(post['amount'])
-        tr.comment = post['comment']
-        tr.save()
-        url = reverse('accounting', kwargs={'year': self.year, 'month': self.month})
-        return HttpResponseRedirect(url)
-
     def get_context_data(self, **kwargs):
         context = super(AccountingView, self).get_context_data(**kwargs)
-        context['year'] = self.year
-        context['month'] = self.month
-        d = date(int(self.year), int(self.month), 15)
-        context['prev_year'] = (d - timedelta(days = 30)).year
-        context['prev_month'] = (d - timedelta(days = 30)).month
-        context['next_year'] = (d + timedelta(days = 30)).year
-        context['next_month'] = (d + timedelta(days = 30)).month
+        context['transactions'] = Transaction.objects.order_by('-date')
         context['calendar'] = self.build_calendar()
-        context['categories'] = Category.objects.order_by('string')
         return context
 
     def build_calendar(self):
@@ -79,17 +56,19 @@ class AccountingView(ListView):
 
 class BudgetCreate(CreateView):
     model = Budget
-    fields = ['description']
-
-    def get_success_url(self):
-        return reverse('budget_main')
+    success_url = reverse_lazy('budget_main')
 
 class CategoryCreate(CreateView):
     model = Category
-    fields = ['name', 'parent']
+    success_url = reverse_lazy('budget_main')
 
-    def get_success_url(self):
-        return reverse('budget', self.year, self.month)
+class CategoryChange(UpdateView):
+    model = Category
+    success_url = reverse_lazy('budget_main')
+
+class CategoryDelete(DeleteView):
+    model = Category
+    success_url = reverse_lazy('budget_main')
 
 class EntryCreate(CreateView):
     model = Entry

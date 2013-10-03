@@ -1,5 +1,8 @@
-<html>
-<body>
-<H1>Category error</H1>
-</body>
-</html>
+{% extends 'budget/budget_base.html' %}
+
+{% block main %}
+<form action="" method="post">{% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Save" />
+</form>
+{% endblock %}
