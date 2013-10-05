@@ -11,10 +11,13 @@ class Budget(models.Model):
     def __unicode__(self):
         return self.description
 
+FACTOR_CHOICES = [ (-1, 'Expense'),
+                   ( 1, 'Income' ) ]
+
 class Entry(models.Model):
     category = models.ForeignKey('Category')
     amount_abs = models.DecimalField(max_digits = 10, decimal_places = 2)
-    factor = models.FloatField(default = -1)
+    factor = models.FloatField(default = -1, choices = FACTOR_CHOICES)
     payments_per_year = models.IntegerField()
     budget = models.ForeignKey('Budget')
 
