@@ -166,8 +166,11 @@ table.datagrid {
 	margin:		0.142857em auto;
 	width:		90%;
 }
-table.datagrid td,th {
+table.datagrid td,th,a {
 	font-family: "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+}
+
+table.datagrid td,th {
 	font-size:		0.8em;
 	border:			0.07em solid #F7F3E2;
 	padding:		0em 0.5em;
@@ -211,12 +214,12 @@ footer {
     width:	100%;
 }
 
-#transaction_form label {
+form label {
     display:	table-cell;
     width:	60%;
 }
 
-#transaction_form label + * {
+form label + * {
     display:	table-cell;
     width:	100%;
     margin-bottom: 0.5em;

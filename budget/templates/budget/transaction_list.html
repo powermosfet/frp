@@ -5,17 +5,18 @@
 
 {% block head %}
 <script src="{% static 'inject_date.js' %}" ></script>
-<script >month = {{ month }};year = {{ year }};</script>
+<script >month = new Date({{ month.year }}, {{ month.month }}, 1);</script>
 {% endblock %}
 
 {% block main %}
-<h3><a href="">&lt;-</a>
+<h3><a href="{% url 'accounting' previous_month.year previous_month.month %}">&lt;-</a>
     {{ month|month }} {{ year }}
-    <a href="">-&gt;</a></h3>
+    <a href="{% url 'accounting' next_month.year next_month.month %}">-&gt;</a></h3>
     <div id='transaction_entry'>
         <div id='transaction_form'>
-            <form action="{% url 'accounting_main' %}" method="POST">{% csrf_token %}
+            <form action="{% url 'transaction_create' %}" method="POST">{% csrf_token %}
                 {{ form.as_p }}
+                <input type="submit" value="Save" />
             </form>
         </div>
         <div id='calendar'>
@@ -49,10 +50,10 @@
     <tr><th>Date</th><th>Category</th><th>Comment</th><th>Amount</th></tr>
       {% for transaction in object_list %}
         <tr>
-        <td>{{ transaction.date }}</td>
+            <td><a href="{% url 'transaction_update' transaction.pk %}">{{ transaction.date }}</a></td>
         <td>{{ transaction.category }}</td>
         <td>{{ transaction.comment }}</td>
-        <td class="currencyDisplay">{{ transaction.amount|two_decimals }}</td>
+        <td class="currencyDisplay">{{ transaction.result|two_decimals }}</td>
         </tr>
       {% endfor %}
     </table>

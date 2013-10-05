@@ -1,4 +1,6 @@
 from django.views.generic import *
+from django.views.generic.dates import MonthArchiveView
+from django.views.generic.edit import ModelFormMixin
 from django import forms
 from budget.models import *
 from django.http import *
@@ -24,27 +26,29 @@ class BudgetView(DetailView):
         context['budgets'] = Budget.objects.all()
         return context
 
-class AccountingView(CreateView):
+class TransactionForm(forms.ModelForm):
+    class Meta:
+        model = Transaction
+
+class AccountingView(MonthArchiveView):
     template_name = 'budget/transaction_list.html'
-    model = Transaction
-    year = date.today().year
-    month = date.today().month
+    queryset = Transaction.objects.all()
+    date_field = 'date'
+    allow_future = True
+    allow_empty = True
 
     def get_context_data(self, **kwargs):
         context = super(AccountingView, self).get_context_data(**kwargs)
-        context['transactions'] = Transaction.objects.order_by('-date')
         context['calendar'] = self.build_calendar()
+        context['form'] = TransactionForm()
         return context
 
     def build_calendar(self):
         calendar = []
         week = [ 0 for x in range(7) ]
         one_day = timedelta(1)
-        year = int(self.year)
-        month = int(self.month)
-        first_day = date(year, month, 1)
-        last_day = first_day + timedelta(days = 31)
-        last_day.replace(day = 1)
+        first_day = date(int(self.get_year()), int(self.get_month()), 1)
+        last_day = self.get_next_month(first_day)
         for d in daterange(first_day, last_day):
             week[d.weekday()] = d.day
             if d.weekday() >= 6:
@@ -53,6 +57,21 @@ class AccountingView(CreateView):
         if any([ x != 0 for x in week ]):
             calendar.append(week)
         return calendar
+
+def AccountingDefaultView(req):
+    return HttpResponseRedirect(reverse_lazy('accounting', args = ( date.today().year, date.today().month )))
+
+class TransactionDelete(DeleteView):
+    model = Transaction
+    success_url = reverse_lazy('accounting_main')
+
+class TransactionUpdate(UpdateView):
+    model = Transaction
+    success_url = reverse_lazy('accounting_main')
+
+class TransactionCreate(CreateView):
+    model = Transaction
+    success_url = reverse_lazy('accounting_main')
 
 class BudgetCreate(CreateView):
     model = Budget

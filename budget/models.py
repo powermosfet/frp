@@ -17,12 +17,11 @@ FACTOR_CHOICES = [ (-1, 'Expense'),
 class Entry(models.Model):
     category = models.ForeignKey('Category')
     amount_abs = models.DecimalField(max_digits = 10, decimal_places = 2)
-    factor = models.FloatField(default = -1, choices = FACTOR_CHOICES)
     payments_per_year = models.IntegerField()
     budget = models.ForeignKey('Budget')
 
     def amount(self):
-        return Decimal(float(self.amount_abs) * float(self.factor))
+        return Decimal(float(self.amount_abs) * float(self.category.factor))
 
     def amount_per_month(self):
         return self.amount() * Decimal(self.payments_per_year / 12.0 )
@@ -34,6 +33,7 @@ class Entry(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length = 30)
+    factor = models.FloatField(help_text = 'Type', default = -1, choices = FACTOR_CHOICES)
     parent = models.ForeignKey('Category', blank = True, null = True)
     string = models.CharField(max_length = 250, editable = False)
 
@@ -48,10 +48,13 @@ class Category(models.Model):
             return u"{0}/{1}".format(self.parent.__unicode__(), self.name)
 
 class Transaction(models.Model):
-    category = models.ForeignKey('Category')
+    category = models.ForeignKey('Category', blank=False)
     comment = models.CharField(max_length=80, blank=True)
     amount = models.DecimalField(max_digits = 10, decimal_places = 2)
     date = models.DateField()
+
+    def result(self):
+        return abs(self.amount) * self.category.factor
 
     def __unicode__(self):
         return u"{0}: {1} - {2} ({3})".format(

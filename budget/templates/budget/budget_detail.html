@@ -36,16 +36,7 @@
               </select>
             </td>
             <td >
-              <div class='form-flex'>
-              <div class='form-flex-inner'>
-                <input name='amount_abs' class='textbox' type='text' />
-              </div>
-              <div class='form-flex-inner'>
-                <select name='factor' class='select'>
-                    <option value='-1'>Expense</option>
-                    <option value='1'>Income</option>
-                </select>
-              </div>
+              <input name='amount_abs' class='textbox' type='text' />
             </div>
             </td>
             <td><input name='payments_per_year' class='textbox' type='text' /></td>
@@ -61,14 +52,11 @@
   <ul>
     {% for cat in categories %}
     <li>
-      <form action="{% url 'category_del' cat.pk %}" method="POST">{% csrf_token %}
-        <a href="{% url 'category_change' cat.pk %}">{{ cat }}</a>
-        <input type="submit" value="x">
-      </form>
+      <a href="{% url 'category_change' cat.pk %}">{{ cat }}</a>
     </li>
     {% endfor %}
     <li>
-    <a href="{% url 'category_create' %}" >Add</a>
+    <form action="{% url 'category_create' %}" method="get"><input type="submit" value="New" /></form>
     </li>
   </ul>
 </p>

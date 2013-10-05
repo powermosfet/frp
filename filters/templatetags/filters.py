@@ -3,6 +3,10 @@ from decimal import Decimal
 
 register = template.Library()
 
+@register.filter('type')
+def type_of(inp):
+    return str(type(inp))
+
 @register.filter('two_decimals')
 def two_decimals(inp):
     if type(inp) is not Decimal:
@@ -14,16 +18,4 @@ def two_decimals(inp):
 @register.filter('month')
 def month(m):
     if m == '': return 'No month'
-    ms = [ 'january',
-            'february',
-            'march',
-            'april',
-            'may',
-            'june',
-            'july',
-            'august',
-            'september',
-            'october',
-            'november',
-            'december' ]
-    return ms[int(m) - 1]
+    return m.strftime('%B %Y')
