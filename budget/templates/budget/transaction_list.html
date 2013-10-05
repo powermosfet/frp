@@ -13,7 +13,7 @@
     {{ month|month }} {{ year }}
     <a href="">-&gt;</a></h3>
     <div id='transaction_entry'>
-        <div>
+        <div id='transaction_form'>
             <form action="{% url 'accounting_main' %}" method="POST">{% csrf_token %}
                 {{ form.as_p }}
             </form>

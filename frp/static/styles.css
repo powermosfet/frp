@@ -205,3 +205,19 @@ footer {
 	-webkit-box-orient:	horizontal;
     margin:             2em 0;
 }
+
+#transaction_form p {
+    display: table-row;
+    width:	100%;
+}
+
+#transaction_form label {
+    display:	table-cell;
+    width:	60%;
+}
+
+#transaction_form label + * {
+    display:	table-cell;
+    width:	100%;
+    margin-bottom: 0.5em;
+}
