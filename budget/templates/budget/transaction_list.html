@@ -53,7 +53,7 @@
             <td><a href="{% url 'transaction_update' transaction.pk %}">{{ transaction.date }}</a></td>
         <td>{{ transaction.category }}</td>
         <td>{{ transaction.comment }}</td>
-        <td class="currencyDisplay">{{ transaction.result|two_decimals }}</td>
+        <td class="currencyDisplay {{ transaction.result|amount_css_class }}">{{ transaction.result|two_decimals }}</td>
         </tr>
       {% endfor %}
     </table>

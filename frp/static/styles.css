@@ -18,12 +18,19 @@ h2 {
 }
 
 h3 {
-    color: #F7F3E2;
-	text-decoration:	underline;
+    color: 		#F7F3E2;
+    text-decoration:	underline;
+    margin-bottom:	1em;
 }
 
 select {
-	background:     #474747;
+	background:     #F2D27A;
+	color: black;
+	width: 15em;
+}
+
+option {
+	color: black;
 }
 
 .select {
@@ -31,15 +38,21 @@ select {
 	margin:			0.2em 0em;
 }
 
+form label {
+    display:		inline-block;
+    width:		10em;
+    margin-bottom:	0.5em;
+}
+
 input {
-	background:     #474747;
-    color: #F7F3E2;
+	background:     #F2D27A;
+	color:		black;
 }
 
 .textbox {
     color:  black;
 	margin:			0.2em 0.2em 0.2em 0em;
-	width: 100%
+	width: 15em;
 }
 
 .addbutton {
@@ -142,9 +155,11 @@ aside p {
 	margin-bottom:	1em;
 }
 
-aside li {
+aside li { font-size:	0.8em; }
+aside li, aside li a {
 	display:	block;
 	list-style:	none;
+	font-family: "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
 }
 
 aside table {
@@ -166,17 +181,24 @@ table.datagrid {
 	margin:		0.142857em auto;
 	width:		90%;
 }
-table.datagrid td,th,a {
+
+table.datagrid td, table.datagrid th, table.datagrid a {
 	font-family: "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+    color:	black;
 }
 
-table.datagrid td,th {
+table.datagrid td {
+}
+
+table.datagrid td, table.datagrid th {
 	font-size:		0.8em;
-	border:			0.07em solid #F7F3E2;
+	border:			0.07em solid black;
+	background:		#F2D27A;
 	padding:		0em 0.5em;
 }
 table.datagrid th {
-	background:     #474747;
+	background:     #A9C598;
+	color:		black;
 }
 
 footer {
@@ -192,7 +214,7 @@ footer {
 	margin-left:	3em;
 }
 
-#calendar td {
+#calendar td, #calendar th{
 	cursor: 	pointer;
 	width:		1.5em;
 	height:		1.5em;
@@ -214,13 +236,20 @@ footer {
     width:	100%;
 }
 
-form label {
-    display:	table-cell;
-    width:	60%;
+.negative {
+    color:	red !important;
 }
 
-form label + * {
-    display:	table-cell;
-    width:	100%;
-    margin-bottom: 0.5em;
+.errorlist {
+    background:	red;
+    width: 20%;
+}
+.errorlist li {
+    color:	black;
+    list-style:	none;
+}
+
+.result_row {
+    font-weight: bold;
+    // text-decoration:	underline;
 }

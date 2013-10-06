@@ -37,9 +37,17 @@ class Category(models.Model):
     parent = models.ForeignKey('Category', blank = True, null = True)
     string = models.CharField(max_length = 250, editable = False)
 
+    class Meta:
+        ordering = [ 'string']
+
     def save(self):
         self.string = self.__unicode__()
         super(Category, self).save()
+
+    def is_or_child(self, other):
+        if other.pk == self.pk: return True
+        elif self.parent is None: return False
+        else: return self.parent.is_or_child(other)
     
     def __unicode__(self):
         if self.parent is None:
@@ -48,13 +56,13 @@ class Category(models.Model):
             return u"{0}/{1}".format(self.parent.__unicode__(), self.name)
 
 class Transaction(models.Model):
-    category = models.ForeignKey('Category', blank=False)
+    category = models.ForeignKey('Category', blank=False, default=1)
     comment = models.CharField(max_length=80, blank=True)
     amount = models.DecimalField(max_digits = 10, decimal_places = 2)
     date = models.DateField()
 
     def result(self):
-        return abs(self.amount) * self.category.factor
+        return Decimal(float(abs(self.amount)) * float(self.category.factor))
 
     def __unicode__(self):
         return u"{0}: {1} - {2} ({3})".format(

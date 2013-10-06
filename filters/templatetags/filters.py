@@ -19,3 +19,17 @@ def two_decimals(inp):
 def month(m):
     if m == '': return 'No month'
     return m.strftime('%B %Y')
+
+@register.filter('amount_css_class')
+def amount_css_class(amount):
+    if amount < 0: return 'negative'
+    else: return ''
+
+@register.filter('in_category')
+def in_category(transactions, category):
+    return [ t for t in transactions if t.category.is_or_child(category) ]
+
+@register.filter('tr_sum')
+def tr_sum(transactions):
+    return sum(t.result() for t in transactions)
+

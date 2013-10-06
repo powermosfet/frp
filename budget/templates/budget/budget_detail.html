@@ -11,19 +11,19 @@
           <th>Payments per year</th>
           <th class='currencyDisplay'>Per month</th>
         </tr>
-        {% for entry in object.entry_set.all %}
+        {% for entry in entries %}
         <tr>
-          <td>{{ entry.category }}</td>
+          <td><a href="{% url 'entry_update' entry.pk %}">{{ entry.category }}</a></td>
           <td class='currencyDisplay'>{{ entry.amount|two_decimals }}</td>
           <td>{{ entry.payments_per_year }}</td>
-          <td class='currencyDisplay'>{{ entry.amount_per_month|two_decimals }}</td>
+          <td class='currencyDisplay {{ entry.amount_per_month|amount_css_class }}'>{{ entry.amount_per_month|two_decimals }}</td>
         </tr>
         {% endfor %}
         <tr>
-          <td >Result</td>
+          <td class="result_row">Result</td>
           <td />
           <td />
-            <td class='currencyDisplay'>{{ object.result|two_decimals }}</td>
+            <td class="currencyDisplay result_row {{ object.result|amount_css_class }}">{{ object.result|two_decimals }}</td>
         </tr>
         <tr>
           <form action='{% url 'entry_create' %}' method='POST'>{% csrf_token %}

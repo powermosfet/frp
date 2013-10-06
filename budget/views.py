@@ -1,6 +1,7 @@
 from django.views.generic import *
 from django.views.generic.dates import MonthArchiveView
-from django.views.generic.edit import ModelFormMixin
+from django.views.generic.detail import SingleObjectMixin
+from django.views.generic.edit import ModelFormMixin, DeletionMixin
 from django import forms
 from budget.models import *
 from django.http import *
@@ -24,6 +25,7 @@ class BudgetView(DetailView):
         context = super(BudgetView, self).get_context_data(**kwargs)
         context['categories'] = Category.objects.order_by('string')
         context['budgets'] = Budget.objects.all()
+        context['entries'] = self.get_object().entry_set.order_by('category__string')
         return context
 
 class TransactionForm(forms.ModelForm):
@@ -32,7 +34,7 @@ class TransactionForm(forms.ModelForm):
 
 class AccountingView(MonthArchiveView):
     template_name = 'budget/transaction_list.html'
-    queryset = Transaction.objects.all()
+    queryset = Transaction.objects.order_by('date')
     date_field = 'date'
     allow_future = True
     allow_empty = True
@@ -64,44 +66,99 @@ def AccountingDefaultView(req):
 class TransactionDelete(DeleteView):
     model = Transaction
     success_url = reverse_lazy('accounting_main')
+    template_name = 'budget/generic_form.html'
 
 class TransactionUpdate(UpdateView):
     model = Transaction
     success_url = reverse_lazy('accounting_main')
+    template_name = 'budget/generic_form.html'
 
 class TransactionCreate(CreateView):
     model = Transaction
-    success_url = reverse_lazy('accounting_main')
+    template_name = 'budget/generic_form.html'
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('accounting', 
+                kwargs = { 'year': self.object.date.year, 'month': self.object.date.month})
 
 class BudgetCreate(CreateView):
     model = Budget
     success_url = reverse_lazy('budget_main')
+    template_name = 'budget/generic_form.html'
 
 class CategoryCreate(CreateView):
     model = Category
     success_url = reverse_lazy('budget_main')
+    template_name = 'budget/generic_form.html'
 
 class CategoryChange(UpdateView):
     model = Category
     success_url = reverse_lazy('budget_main')
+    template_name = 'budget/generic_form.html'
 
 class CategoryDelete(DeleteView):
     model = Category
     success_url = reverse_lazy('budget_main')
+    template_name = 'budget/generic_form.html'
+
+class EntryDelete(DeleteView):
+    model = Entry
+    success_url = reverse_lazy('budget_main')
+    template_name = 'budget/generic_form.html'
 
 class EntryCreate(CreateView):
     model = Entry
-    fields = ['category', 'amount_abs', 'factor'
-              'payments_per_year', 'budget']
+    template_name = 'budget/generic_form.html'
+
+    def get_success_url(self, **kwargs):
+        return reverse('budget', kwargs={'pk': self.budget})
 
     def form_valid(self, form):
         if form.instance.budget is not None:
             self.budget = form.instance.budget.pk
         return super(EntryCreate, self).form_valid(form)
 
-    def get_success_url(self):
+class EntryUpdate(UpdateView, DeletionMixin):
+    model = Entry
+    template_name = 'budget/generic_form.html'
+
+    def delete(self, r, *args, **kwargs):
+        import pdb;pdb.set_trace()
+        return super(EntryUpdate, self).delete(r, *args, **kwargs)
+
+    def get_success_url(self, **kwargs):
         return reverse('budget', kwargs={'pk': self.budget})
+
+    def form_valid(self, form):
+        if form.instance.budget is not None:
+            self.budget = form.instance.budget.pk
+        return super(EntryUpdate, self).form_valid(form)
 
 def daterange(start_date, end_date):
     for n in range(int ((end_date - start_date).days)):
         yield start_date + timedelta(n)
+
+def compareView(r):
+    return HttpResponseRedirect(
+            reverse_lazy('compare', kwargs={ 'pk': Budget.objects.order_by('-pk')[0].pk,
+                                             'year'  : date.today().year,
+                                             'month' : date.today().month }))
+
+class Compare(SingleObjectMixin, MonthArchiveView):
+    queryset = Transaction.objects.order_by('date')
+    template_name = 'budget/compare.html'
+    date_field = 'date'
+    allow_future = True
+    allow_empty = True
+
+    def get(self, *args, **kwargs):
+        self.object = self.get_object(Budget.objects.all())
+        return super(Compare, self).get(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(Compare, self).get_context_data(**kwargs)
+        context['object'] = self.object
+        return context
+
+    def get_object(self, queryset = None):
+        return super(Compare, self).get_object(queryset)
