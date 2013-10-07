@@ -38,7 +38,7 @@ class Category(models.Model):
     string = models.CharField(max_length = 250, editable = False)
 
     class Meta:
-        ordering = [ 'string']
+        ordering = ['string']
 
     def save(self):
         self.string = self.__unicode__()

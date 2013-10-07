@@ -253,3 +253,19 @@ footer {
     font-weight: bold;
     // text-decoration:	underline;
 }
+
+.status_good, .status_ok, .status_bad {
+    height:	0.8em;
+    width:	0.8em;
+    border:	1px solid black;
+    display:	inline-block;
+    vertical-align: middle;
+}
+
+.status_good { background: green; }
+.status_ok   { background: yellow; }
+.status_bad  { background: red; }
+
+.important-datagrid-cell {
+    font-weight:	bold;
+}

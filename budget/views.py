@@ -43,6 +43,7 @@ class AccountingView(MonthArchiveView):
         context = super(AccountingView, self).get_context_data(**kwargs)
         context['calendar'] = self.build_calendar()
         context['form'] = TransactionForm()
+        context['suggestions'] = self.get_suggestions()
         return context
 
     def build_calendar(self):
@@ -59,6 +60,18 @@ class AccountingView(MonthArchiveView):
         if any([ x != 0 for x in week ]):
             calendar.append(week)
         return calendar
+    
+    def get_suggestions(self):
+        prev_month = date(self.get_previous_year(), self.get_previous_month(), 15)
+        two_months_ago = prev_month - timedelta(days=30)
+        scores = {}
+
+class TransactionSuggestion(object):
+    def __init__(self, category, comment, amount, date):
+        self.category = category
+        self.comment = comment
+        self.amount = amount
+        self.date = date
 
 def AccountingDefaultView(req):
     return HttpResponseRedirect(reverse_lazy('accounting', args = ( date.today().year, date.today().month )))

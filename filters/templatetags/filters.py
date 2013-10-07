@@ -33,3 +33,14 @@ def in_category(transactions, category):
 def tr_sum(transactions):
     return sum(t.result() for t in transactions)
 
+@register.filter('subtract')
+def subtract(a, b):
+    return Decimal(float(a) - float(b))
+
+@register.filter('status_css_class')
+def subtract(diff, budgeted):
+    if diff < 0:
+        if abs(diff) / budgeted < 0.1: return 'status_ok'
+        else:                          return 'status_bad'
+    else:                              return 'status_good'
+

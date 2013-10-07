@@ -9,17 +9,30 @@
     <a href="{% url 'compare' object.pk next_month.year next_month.month %}">-&gt;</a></h3>
 
     <table class="datagrid">
-    <tr><th>Category</th><th>Budgeted amount</th><th>Actual amount</th></tr>
+    <tr><th>Category</th><th>Budgeted amount</th><th>Actual amount</th><th>Difference</th></tr>
       {% for entry in object.entry_set.all %}
         <tr>
         <td>{{ entry.category }}</td>
         <td class="currencyDisplay {{ entry.amount|amount_css_class }}">
             {{ entry.amount|two_decimals }}
         </td>
-        <td class="currencyDisplay {{ entry.amount|amount_css_class }}">
-            {{ object_list|in_category:entry.category|tr_sum|two_decimals }}
-        </td>
+        {% with sum=object_list|in_category:entry.category|tr_sum %}
+            <td class="currencyDisplay {{ sum|amount_css_class }}">
+                {{ sum|two_decimals }}
+            </td>
+            {% with diff=sum|subtract:entry.amount %}
+                <td class="currencyDisplay {{ diff|amount_css_class }}">
+                    {{ diff|two_decimals }}
+                    <div class="{{ diff|status_css_class:entry.amount }}" />
+                </td>
+            {% endwith %}
+        {% endwith %}
         </tr>
       {% endfor %}
+      <tr><td class="important-datagrid-cell">
     </table>
+{% endblock %}
+
+{% block sidemenu %}
+    aside
 {% endblock %}
