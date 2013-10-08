@@ -1,3 +1,6 @@
 #! /bin/bash
 
+branch=$(git branch | awk '/\*\ \w+/{ print $2 ;}')
+git checkout master
 git ls-files -z | rsync --files-from - --copy-links -av0 . asmund@192.168.1.138:/home/asmund/web/frp/
+git checkout $branch
