@@ -40,9 +40,9 @@ class Category(models.Model):
     class Meta:
         ordering = ['string']
 
-    def save(self):
+    def save(self, *args, **kwargs):
         self.string = self.__unicode__()
-        super(Category, self).save()
+        super(Category, self).save(*args, **kwargs)
 
     def is_or_child(self, other):
         if other.pk == self.pk: return True
