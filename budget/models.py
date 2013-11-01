@@ -56,7 +56,7 @@ class Category(models.Model):
             return u"{0}/{1}".format(self.parent.__unicode__(), self.name)
 
 class Transaction(models.Model):
-    category = models.ForeignKey('Category', blank=False, default=1)
+    category = models.ForeignKey('Category', blank=False)
     comment = models.CharField(max_length=80, blank=True)
     amount = models.DecimalField(max_digits = 10, decimal_places = 2)
     date = models.DateField()
