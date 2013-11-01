@@ -92,10 +92,25 @@ class TransactionCreate(CreateView):
         return reverse_lazy('accounting', 
                 kwargs = { 'year': self.object.date.year, 'month': self.object.date.month})
 
+class BudgetForm(forms.ModelForm):
+    copy_from = forms.ModelChoiceField(queryset=Budget.objects.all())
+    class Meta:
+        model = Budget
+
 class BudgetCreate(CreateView):
-    model = Budget
+    form_class = BudgetForm
     success_url = reverse_lazy('budget_main')
     template_name = 'budget/generic_form.html'
+
+    def form_valid(self, *args, **kwargs):
+        redirect = super(BudgetCreate, self).form_valid(*args, **kwargs)
+        copy_from = args[0].cleaned_data['copy_from']
+        if copy_from is not None:
+            for e in copy_from.entry_set.all():
+                e.pk = None
+                e.budget = self.object
+                e.save()
+        return redirect
 
 class CategoryCreate(CreateView):
     model = Category

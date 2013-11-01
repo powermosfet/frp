@@ -67,19 +67,7 @@
     <a href='{% url 'budget' b.pk %}'><li>{{ b }}</li></a>
     {% endfor %}
     <li>
-      <form action='{% url 'budget_create' %}' method ='POST'>{% csrf_token %}
-        <table>
-          <tr>
-            <td>
-              <input type='text' class='textbox' name='description' />
-            </td>
-            <td class='separator' />
-            <td>
-              <button type='submit' class='addbutton' name='add'>Add</button>
-            </td>
-          </tr>
-        </table>
-      </form>
+    <form action="{% url 'budget_create' %}" method="get"><input type="submit" value="New" /></form>
     </li>
   </ul>
 </p>
