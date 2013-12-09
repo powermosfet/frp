@@ -9,7 +9,7 @@ class Budget(models.Model):
         return Decimal(sum(x.amount_per_month() for x in self.entry_set.all()))
 
     def __unicode__(self):
-        return self.description
+        return u"[{0}] {1}".format(self.timestamp.date(), self.description)
 
 FACTOR_CHOICES = [ (-1, 'Expense'),
                    ( 1, 'Income' ) ]

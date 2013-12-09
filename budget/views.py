@@ -170,6 +170,15 @@ def compareView(r):
                                              'year'  : date.today().year,
                                              'month' : date.today().month }))
 
+class MyDateInput(forms.DateInput):
+    def __init__(self, *args, **kwargs):
+        return super(MyDateInput, self).__init__(*args, attrs = { 'class': 'datepicker' }, **kwargs )
+
+class CompareForm(forms.Form):
+    budget = forms.ModelChoiceField(Budget.objects.order_by('-pk'))
+    date_from = forms.DateField(widget = MyDateInput)
+    date_to = forms.DateField(widget = MyDateInput)
+
 class Compare(SingleObjectMixin, MonthArchiveView):
     queryset = Transaction.objects.order_by('date')
     template_name = 'budget/compare.html'
@@ -181,9 +190,11 @@ class Compare(SingleObjectMixin, MonthArchiveView):
         self.object = self.get_object(Budget.objects.all())
         return super(Compare, self).get(*args, **kwargs)
 
+
     def get_context_data(self, **kwargs):
         context = super(Compare, self).get_context_data(**kwargs)
         context['object'] = self.object
+        context['form'] = CompareForm()
         return context
 
     def get_object(self, queryset = None):

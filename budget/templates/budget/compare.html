@@ -4,9 +4,15 @@
 {% load static %}
 
 {% block main %}
-<h3>Compare budget '{{ object }}' against <a href="{% url 'compare' object.pk previous_month.year previous_month.month %}">&lt;-</a>
-    {{ month|month }} {{ year }}
-    <a href="{% url 'compare' object.pk next_month.year next_month.month %}">-&gt;</a></h3>
+<h3>
+    Compare budget
+</h3>
+
+<p>
+    <form>
+    {{ form.as_p }}
+    </form>
+</p>
 
     <table class="datagrid">
     <tr><th>Category</th><th>Budgeted amount</th><th>Actual amount</th><th>Difference</th></tr>
@@ -31,6 +37,10 @@
       {% endfor %}
       <tr><td class="important-datagrid-cell">
     </table>
+<script>
+$( ".datepicker" ).datepicker();
+$( ".datepicker" ).datepicker( "option", "dateFormat", 'yy-mm-dd' );
+</script>
 {% endblock %}
 
 {% block sidemenu %}
