@@ -18,6 +18,5 @@ urlpatterns = patterns('',
     url(r'^entry/(?P<pk>\d+)/$', EntryUpdate.as_view(), name='entry_update'),
     url(r'^entry/(?P<pk>\d+)/del/$', EntryDelete.as_view(), name='entry_del'),
 
-    url(r'^compare/$', compareView, name='compare_main'),
-    url(r'^compare/(?P<pk>\d+)/(?P<year>\d+)/(?P<month>\d+)/$', Compare.as_view(month_format='%m'), name='compare'),
+    url(r'^compare/$', Compare.as_view(), name='compare'),
 )

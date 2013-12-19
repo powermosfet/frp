@@ -50,7 +50,7 @@
     <tr><th>Date</th><th>Category</th><th>Comment</th><th>Amount</th></tr>
       {% for transaction in object_list %}
         <tr>
-            <td><a href="{% url 'transaction_update' transaction.pk %}">{{ transaction.date }}</a></td>
+        <td><a href="{% url 'transaction_update' transaction.pk %}">{{ transaction.date }}</a></td>
         <td>{{ transaction.category }}</td>
         <td>{{ transaction.comment }}</td>
         <td class="currencyDisplay {{ transaction.result|amount_css_class }}">{{ transaction.result|two_decimals }}</td>

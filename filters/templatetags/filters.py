@@ -13,7 +13,7 @@ def two_decimals(inp):
         n = Decimal()
     else:
         n = inp
-    return n.quantize(Decimal('0.01'))
+    return "{0:.2f}".format(inp)
 
 @register.filter('month')
 def month(m):

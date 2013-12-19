@@ -7,6 +7,8 @@ from budget.models import *
 from django.http import *
 from django.core.urlresolvers import reverse, reverse_lazy
 from datetime import *
+import dateutil.parser
+from calendar import monthrange as mr
 
 class BudgetView(DetailView):
     model = Budget
@@ -164,38 +166,44 @@ def daterange(start_date, end_date):
     for n in range(int ((end_date - start_date).days)):
         yield start_date + timedelta(n)
 
-def compareView(r):
-    return HttpResponseRedirect(
-            reverse_lazy('compare', kwargs={ 'pk': Budget.objects.order_by('-pk')[0].pk,
-                                             'year'  : date.today().year,
-                                             'month' : date.today().month }))
-
-class MyDateInput(forms.DateInput):
-    def __init__(self, *args, **kwargs):
-        return super(MyDateInput, self).__init__(*args, attrs = { 'class': 'datepicker' }, **kwargs )
-
 class CompareForm(forms.Form):
     budget = forms.ModelChoiceField(Budget.objects.order_by('-pk'))
-    date_from = forms.DateField(widget = MyDateInput)
-    date_to = forms.DateField(widget = MyDateInput)
+    date_from = forms.DateField()
+    date_to = forms.DateField()
 
-class Compare(SingleObjectMixin, MonthArchiveView):
-    queryset = Transaction.objects.order_by('date')
+class Compare(ListView):
     template_name = 'budget/compare.html'
-    date_field = 'date'
-    allow_future = True
-    allow_empty = True
+    context_object_name = 'transactions'
 
     def get(self, *args, **kwargs):
-        self.object = self.get_object(Budget.objects.all())
+        t = date.today()
+        y, m = t.year, t.month
+        self.date_from_str = self.request.GET.get('date_from')
+        self.date_to_str = self.request.GET.get('date_to')
+        try:
+            self.date_from = dateutil.parser.parse(self.date_from_str)
+            self.date_to = dateutil.parser.parse(self.date_to_str)
+        except:
+            self.date_from_str = date(y, m, 1          ).isoformat()
+            self.date_to_str   = date(y, m, mr(y, m)[1]).isoformat()
+            self.date_from = dateutil.parser.parse(self.date_from_str)
+            self.date_to = dateutil.parser.parse(self.date_to_str)
+        self.budget_pk = self.request.GET.get('budget')
+        self.budget = Budget.objects.filter(pk=self.budget_pk).first()
+        if self.budget is None:
+            self.budget = Budget.objects.last()
+            self.budget_pk = self.budget.pk
         return super(Compare, self).get(*args, **kwargs)
 
 
+    def get_queryset(self, *args, **kwargs):
+        return Transaction.objects.filter(date__range=(self.date_from, self.date_to))
+
     def get_context_data(self, **kwargs):
         context = super(Compare, self).get_context_data(**kwargs)
-        context['object'] = self.object
-        context['form'] = CompareForm()
+        context['budget'] = self.budget
+        context['form'] = CompareForm(initial = { 'budget':    self.budget_pk,
+                                                  'date_from': self.date_from_str,
+                                                  'date_to':   self.date_to_str,     
+                                                })
         return context
-
-    def get_object(self, queryset = None):
-        return super(Compare, self).get_object(queryset)
