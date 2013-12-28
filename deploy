@@ -3,7 +3,7 @@
 branch=$(git branch | awk '/\*\ \w+/{ print $2 ;}')
 if [ "$branch" = "master" ]
 then
-git ls-files -z | rsync --files-from - --copy-links -av0 . asmund@192.168.1.124:/home/asmund/web/frp/
+git ls-files -z | rsync --files-from - --copy-links -av0 . asmund@192.168.1.100:/home/asmund/web/frp/
 else
 	echo "You are on $branch. Deployment must happen from master."
 fi

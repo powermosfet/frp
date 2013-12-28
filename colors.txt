@@ -2,8 +2,3 @@ light beige #F7F3E2
 yellow      #F2D27A
 orange      #F68F64
 green       #A9C598
-new color
-another color
-Third color
-Fourth color
-fifth color
