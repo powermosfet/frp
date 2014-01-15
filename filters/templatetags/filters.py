@@ -15,6 +15,11 @@ def two_decimals(inp):
         n = inp
     return "{0:.2f}".format(inp)
 
+@register.filter('category_display')
+def category_display(cat):
+    if cat is None: return "Unbudgeted"
+    return cat
+
 @register.filter('month')
 def month(m):
     if m == '': return 'No month'
@@ -25,22 +30,11 @@ def amount_css_class(amount):
     if amount < 0: return 'negative'
     else: return ''
 
-@register.filter('in_category')
-def in_category(transactions, category):
-    return [ t for t in transactions if t.category.is_or_child(category) ]
-
-@register.filter('tr_sum')
-def tr_sum(transactions):
-    return sum(t.result() for t in transactions)
-
-@register.filter('subtract')
-def subtract(a, b):
-    return Decimal(float(a) - float(b))
-
 @register.filter('status_css_class')
 def subtract(diff, budgeted):
     if diff < 0:
-        if abs(diff) / budgeted < 0.1: return 'status_ok'
+        if budgeted == 0: return 'status_bad'
+        if abs(diff / budgeted) < 0.1: return 'status_ok'
         else:                          return 'status_bad'
     else:                              return 'status_good'
 

@@ -16,23 +16,19 @@
 
     <table class="datagrid">
     <tr><th>Category</th><th>Budgeted amount</th><th>Actual amount</th><th>Difference</th></tr>
-      {% for entry in budget.entry_set.all %}
+      {% for comparison in comparisons %}
         <tr>
-        <td>{{ entry.category }}</td>
-        <td class="currencyDisplay {{ entry.amount_per_month|amount_css_class }}">
-            {{ entry.amount_per_month|two_decimals }}
+        <td>{{ comparison.category|category_display }}</td>
+        <td class="currencyDisplay {{ comparison.budgeted_amount|amount_css_class }}">
+            {{ comparison.budgeted_amount|two_decimals }}
         </td>
-        {% with sum=transactions|in_category:entry.category|tr_sum %}
-            <td class="currencyDisplay {{ sum|amount_css_class }}">
-                {{ sum|two_decimals }}
-            </td>
-            {% with diff=sum|subtract:entry.amount_per_month %}
-                <td class="currencyDisplay {{ diff|amount_css_class }}">
-                    {{ diff|two_decimals }}
-                    <div class="{{ diff|status_css_class:entry.amount }}" />
-                </td>
-            {% endwith %}
-        {% endwith %}
+        <td class="currencyDisplay {{ comparison.actual_amount|amount_css_class }}">
+            {{ comparison.actual_amount|two_decimals }}
+        </td>
+        <td class="currencyDisplay {{ comparison.diff|amount_css_class }}">
+            {{ comparison.diff|two_decimals }}
+            <div class="{{ comparison.diff|status_css_class:comparison.budgeted_amount }}" />
+        </td>
         </tr>
       {% endfor %}
       <tr><td class="important-datagrid-cell">

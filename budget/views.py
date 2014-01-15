@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from datetime import *
 import dateutil.parser
 from calendar import monthrange as mr
+from decimal import Decimal
 
 class BudgetView(DetailView):
     model = Budget
@@ -171,9 +172,37 @@ class CompareForm(forms.Form):
     date_from = forms.DateField()
     date_to = forms.DateField()
 
+class Comparison(object):
+    def __init__(self, date_from, date_to, entry):
+        self.budgeted_amount = Decimal()
+        self.category = entry.category
+        days = (date_to - date_from).days
+        if days > 0:
+            self.budgeted_amount = entry.amount() * entry.payments_per_year * Decimal(days / 365.0)
+        self.actual_amount = sum(t.result()
+                                    for t in Transaction.objects
+                                        .filter(date__range=(date_from, date_to))
+                                        if t.category.is_or_child(entry.category)
+                                )
+
+    def diff(self):
+        return self.actual_amount - self.budgeted_amount 
+
+class UnbudgetedComparison(Comparison):
+    def __init__(self, date_from, date_to, budget):
+        self.budgeted_amount = Decimal()
+        self.category = None
+        self.actual_amount = sum(t.result()
+                                    for t in Transaction.objects
+                                        .filter(date__range=(date_from, date_to))
+                                        if all(not t.category.is_or_child(e.category)
+                                            for e in budget.entry_set.all()
+                                            )
+                                )
+
 class Compare(ListView):
     template_name = 'budget/compare.html'
-    context_object_name = 'transactions'
+    context_object_name = 'comparisons'
 
     def get(self, *args, **kwargs):
         t = date.today()
@@ -193,11 +222,14 @@ class Compare(ListView):
         if self.budget is None:
             self.budget = Budget.objects.last()
             self.budget_pk = self.budget.pk
+        self.comparisons = [ Comparison(self.date_from, self.date_to, en )
+                            for en in self.budget.entry_set.all() ]
+        self.comparisons.append(UnbudgetedComparison(self.date_from, self.date_to, self.budget ))
         return super(Compare, self).get(*args, **kwargs)
 
 
     def get_queryset(self, *args, **kwargs):
-        return Transaction.objects.filter(date__range=(self.date_from, self.date_to))
+        return self.comparisons
 
     def get_context_data(self, **kwargs):
         context = super(Compare, self).get_context_data(**kwargs)
