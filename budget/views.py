@@ -1,4 +1,5 @@
 from django.views.generic import *
+from django.contrib.auth.decorators import login_required
 from django.views.generic.dates import MonthArchiveView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import ModelFormMixin, DeletionMixin
