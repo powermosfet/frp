@@ -228,7 +228,6 @@ footer {
 	display:			-webkit-box;
 	-moz-box-orient:	horizontal;
 	-webkit-box-orient:	horizontal;
-    margin:             2em 0;
 }
 
 #transaction_form p {
@@ -268,4 +267,9 @@ footer {
 
 .important-datagrid-cell {
     font-weight:	bold;
+}
+
+form {
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
