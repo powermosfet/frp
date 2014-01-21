@@ -11,6 +11,7 @@
 <p>
     <form method='GET'>
     {{ form.as_p }}
+    <input type="submit" value="Update" />
     </form>
 </p>
 
@@ -33,11 +34,6 @@
       {% endfor %}
       <tr><td class="important-datagrid-cell">
     </table>
-    <script>
-        $('input,select').change(function() {
-                $('form').submit();
-                });
-    </script>
 {% endblock %}
 
 {% block sidemenu %}
