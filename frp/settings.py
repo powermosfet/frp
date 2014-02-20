@@ -125,7 +125,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'gunicorn',
-    # 'south',
+    'south',
     'wishlist',
     'budget',
     'filters',
