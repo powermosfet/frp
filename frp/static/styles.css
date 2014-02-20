@@ -273,3 +273,18 @@ form {
     margin-top: 1em;
     margin-bottom: 1em;
 }
+
+.login-box {
+    margin: 3em 17em;
+    background: black;
+    border-radius: 15px;
+    padding: 1em 3em;
+}
+
+.navbar {
+    display: -moz-box;
+}
+
+.navbar nav {
+    -moz-box-flex: 1;
+}

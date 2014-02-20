@@ -1,7 +1,9 @@
 from django.db import models
 from decimal import Decimal
+from family.models import *
 
 class Budget(models.Model):
+    family = models.ForeignKey(Family)
     timestamp = models.DateTimeField(auto_now_add = True)
     description = models.CharField(max_length = 30)
 
@@ -32,6 +34,7 @@ class Entry(models.Model):
                                         self.payments_per_year)
 
 class Category(models.Model):
+    family = models.ForeignKey(Family)
     name = models.CharField(max_length = 30)
     factor = models.FloatField(help_text = 'Type', default = -1, choices = FACTOR_CHOICES)
     parent = models.ForeignKey('Category', blank = True, null = True)
@@ -56,6 +59,7 @@ class Category(models.Model):
             return u"{0}/{1}".format(self.parent.__unicode__(), self.name)
 
 class Transaction(models.Model):
+    family = models.ForeignKey(Family)
     category = models.ForeignKey('Category', blank=False)
     comment = models.CharField(max_length=80, blank=True)
     amount = models.DecimalField(max_digits = 10, decimal_places = 2)

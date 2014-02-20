@@ -13,7 +13,7 @@ urlpatterns = patterns('',
     url(r'^wishlist/', include('wishlist.urls')),
     url(r'^budget/', include('budget.urls')),
     url(r'^login/', 'django.contrib.auth.views.login', {'template_name': 'login.html'}, name = 'login'),
-    url(r'^logout/', 'django.contrib.auth.views.logout'),
+    url(r'^logout/', 'django.contrib.auth.views.logout',{'template_name': 'logout.html'}, name = 'logout'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

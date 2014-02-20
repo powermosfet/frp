@@ -1,0 +1,29 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{% block caption %}Family resource planning{% endblock %}</title>
+    <script src="{% static 'jquery-1.10.2.min.js' %}"></script>
+    <script src="{% static 'jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'jquery-ui-1.10.3.custom/css/humanity/jquery-ui-1.10.3.custom.min.css' %}">
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    <div id="wrapper">
+      <header>
+      <h1>Family resource planning</h1>
+      </header>
+      {% block content %}{% endblock %}
+      <footer>
+      This is still a work in progress
+      </footer>
+    </div>
+    <script>
+    $( "input[name*=date]" ).datepicker( {
+          'dateFormat': 'yy-mm-dd'
+        });
+    </script>
+  </body>
+</html>

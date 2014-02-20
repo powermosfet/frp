@@ -127,10 +127,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'gunicorn',
-    # 'south',
+    'south',
     'wishlist',
     'budget',
     'filters',
+    'family',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -165,6 +166,10 @@ LOGGING = {
         },
     }
 }
+
+LOGIN_REDIRECT_URL = '/'
+
+AUTH_USER_MODEL = 'family.FamilyMember'
 
 try:
     from local_settings import *
