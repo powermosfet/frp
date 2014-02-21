@@ -169,8 +169,6 @@ LOGGING = {
 
 LOGIN_REDIRECT_URL = '/'
 
-AUTH_USER_MODEL = 'family.FamilyMember'
-
 try:
     from local_settings import *
 except:

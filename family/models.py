@@ -5,10 +5,17 @@ from django.db.models.signals import post_save
 class Family(models.Model):
     name = models.CharField(max_length = 80)
 
-class FamilyMember(AbstractBaseUser):  
-    login = models.CharField(max_length=30, unique=True)
-    email = models.EmailField()
+class FamilyMember(models.Model):  
+    user = models.OneToOneField(User)
     families = models.ManyToManyField(Family)
     USERNAME_FIELD = 'login'
     REQUIRED_FIELDS = ['email']
 
+def create_family_member(*args, **kwargs):
+    u = kwargs['instance']
+    if not u.familymember:
+        fm = FamilyMember()
+        fm.user = u
+        fm.save()
+
+post_save.connect(create_family_member, sender = User)
