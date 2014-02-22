@@ -5,6 +5,9 @@ from django.db.models.signals import post_save
 class Family(models.Model):
     name = models.CharField(max_length = 80)
 
+    def __unicode__(self):
+        return self.name
+
 class FamilyMember(models.Model):  
     user = models.OneToOneField(User)
     families = models.ManyToManyField(Family)

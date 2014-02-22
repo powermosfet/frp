@@ -11,8 +11,9 @@ from datetime import *
 import dateutil.parser
 from calendar import monthrange as mr
 from decimal import Decimal
+from family.views import *
 
-class BudgetView(DetailView):
+class BudgetView(FamilyMixin, DetailView):
     model = Budget
 
     def get_object(self, queryset=None):
@@ -25,8 +26,8 @@ class BudgetView(DetailView):
             obj = super(BudgetView, self).get_object(queryset)
         return obj
 
-    def get_context_data(self, **kwargs):
-        context = super(BudgetView, self).get_context_data(**kwargs)
+    def get_context_data(self, *args, **kwargs):
+        context = super(BudgetView, self).get_context_data(*args, **kwargs)
         context['categories'] = Category.objects.order_by('string')
         context['budgets'] = Budget.objects.all()
         context['entries'] = self.get_object().entry_set.order_by('category__string')
@@ -36,7 +37,7 @@ class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
 
-class AccountingView(MonthArchiveView):
+class AccountingView(FamilyMixin, MonthArchiveView):
     template_name = 'budget/transaction_list.html'
     queryset = Transaction.objects.order_by('date')
     date_field = 'date'
@@ -74,26 +75,27 @@ class TransactionSuggestion(object):
 def AccountingDefaultView(req):
     return HttpResponseRedirect(reverse_lazy('accounting', args = ( date.today().year, date.today().month )))
 
-class TransactionDelete(DeleteView):
+class TransactionDelete(FamilyMixin, DeleteView):
     model = Transaction
-    success_url = reverse_lazy('accounting_main')
     template_name = 'budget/generic_form.html'
 
-class TransactionUpdate(UpdateView):
+    def get_success_url(self, *args, **kwargs):
+        return reverse_lazy('accounting_main', self.family)
+
+class TransactionUpdate(FamilyMixin, UpdateView):
     model = Transaction
-    success_url = reverse_lazy('accounting_main')
     template_name = 'budget/generic_form.html'
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('accounting', 
+        return reverse_lazy('accounting', self.family,
                 kwargs = { 'year': self.object.date.year, 'month': self.object.date.month})
 
-class TransactionCreate(CreateView):
+class TransactionCreate(FamilyMixin, CreateView):
     model = Transaction
     template_name = 'budget/generic_form.html'
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('accounting', 
+        return reverse_lazy('accounting', self.family,
                 kwargs = { 'year': self.object.date.year, 'month': self.object.date.month})
 
 class BudgetForm(forms.ModelForm):
@@ -101,9 +103,8 @@ class BudgetForm(forms.ModelForm):
     class Meta:
         model = Budget
 
-class BudgetCreate(CreateView):
+class BudgetCreate(FamilyMixin, CreateView):
     form_class = BudgetForm
-    success_url = reverse_lazy('budget_main')
     template_name = 'budget/generic_form.html'
 
     def form_valid(self, *args, **kwargs):
@@ -116,27 +117,38 @@ class BudgetCreate(CreateView):
                 e.save()
         return redirect
 
-class CategoryCreate(CreateView):
+    def get_success_url(self, *args, **kwargs):
+        return reverse_lazy('budget_main', self.family)
+
+class CategoryCreate(FamilyMixin, CreateView):
     model = Category
-    success_url = reverse_lazy('budget_main')
     template_name = 'budget/generic_form.html'
 
-class CategoryChange(UpdateView):
+    def get_success_url(self, *args, **kwargs):
+        return reverse_lazy('budget_main', self.family)
+
+class CategoryChange(FamilyMixin, UpdateView):
     model = Category
-    success_url = reverse_lazy('budget_main')
     template_name = 'budget/generic_form.html'
 
-class CategoryDelete(DeleteView):
+    def get_success_url(self, *args, **kwargs):
+        return reverse_lazy('budget_main', self.family)
+
+class CategoryDelete(FamilyMixin, DeleteView):
     model = Category
-    success_url = reverse_lazy('budget_main')
     template_name = 'budget/generic_form.html'
 
-class EntryDelete(DeleteView):
+    def get_success_url(self, *args, **kwargs):
+        return reverse_lazy('budget_main', self.family)
+
+class EntryDelete(FamilyMixin, DeleteView):
     model = Entry
-    success_url = reverse_lazy('budget_main')
     template_name = 'budget/generic_form.html'
 
-class EntryCreate(CreateView):
+    def get_success_url(self, *args, **kwargs):
+        return reverse_lazy('budget_main', self.family)
+
+class EntryCreate(FamilyMixin, CreateView):
     model = Entry
     template_name = 'budget/generic_form.html'
 
@@ -148,7 +160,7 @@ class EntryCreate(CreateView):
             self.budget = form.instance.budget.pk
         return super(EntryCreate, self).form_valid(form)
 
-class EntryUpdate(UpdateView, DeletionMixin):
+class EntryUpdate(FamilyMixin, UpdateView, DeletionMixin):
     model = Entry
     template_name = 'budget/generic_form.html'
 

@@ -8,10 +8,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'wishlist.views.mainView', name='home'),
-    url(r'^$', include('wishlist.urls')),
-    url(r'^wishlist/', include('wishlist.urls')),
-    url(r'^budget/', include('budget.urls')),
+    url(r'^(?P<family>\d+)/wishlist/', include('wishlist.urls')),
+    url(r'^(?P<family>\d+)/budget/', include('budget.urls')),
     url(r'^login/', 'django.contrib.auth.views.login', {'template_name': 'login.html'}, name = 'login'),
     url(r'^logout/', 'django.contrib.auth.views.logout',{'template_name': 'logout.html'}, name = 'logout'),
 

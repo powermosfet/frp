@@ -5,8 +5,8 @@
 
 {% block header %}Budget{% endblock %}
 {% block appmenu %}
-<li><a href="{% url 'budget_main' %}">[budget]</a></li>
-<li><a href="{% url 'accounting_main' %}">[accounting]</a></li>
-<li><a href="{% url 'compare' %}">[compare]</a></li>
+<li><a href="{% url 'budget_main' family %}">[budget]</a></li>
+<li><a href="{% url 'accounting_main' family %}">[accounting]</a></li>
+<li><a href="{% url 'compare' family %}">[compare]</a></li>
 {% endblock %}
 
