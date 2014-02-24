@@ -1,15 +1,17 @@
 from django.shortcuts import render
 from django.views.generic import *
+from django.contrib.auth.views import login
+from django.contrib.auth.forms import AuthenticationForm
+from django.forms import *
+from family.models import *
 
 # Create your views here.
 
-class FamilyMixin(View):
+class LoginForm(AuthenticationForm):
+    family = ModelChoiceField(queryset=Family.objects.all())
 
-    def get(self, *args, **kwargs):
-        self.family = kwargs['family']
-        return super(FamilyMixin, self).get(*args, **kwargs)
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(FamilyMixin, self).get_context_data(*args, **kwargs)
-        context['family'] = self.family
-        return context
+def family_login(request, *args, **kwargs):
+    if request.method == 'POST':
+        f = request.POST.get('family', None)
+        request.session['family'] = f
+    return login(request, *args, **kwargs)

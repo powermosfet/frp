@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.dates import MonthArchiveView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import ModelFormMixin, DeletionMixin
-from django import forms
+from django.forms import *
 from budget.models import *
 from django.http import *
 from django.core.urlresolvers import reverse, reverse_lazy
@@ -13,7 +13,7 @@ from calendar import monthrange as mr
 from decimal import Decimal
 from family.views import *
 
-class BudgetView(FamilyMixin, DetailView):
+class BudgetView(DetailView):
     model = Budget
 
     def get_object(self, queryset=None):
@@ -28,16 +28,16 @@ class BudgetView(FamilyMixin, DetailView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(BudgetView, self).get_context_data(*args, **kwargs)
-        context['categories'] = Category.objects.order_by('string')
-        context['budgets'] = Budget.objects.all()
+        context['categories'] = Category.objects.filter(family = self.request.session['family']).order_by('string')
+        context['budgets'] = Budget.objects.filter(family = self.request.session['family'])
         context['entries'] = self.get_object().entry_set.order_by('category__string')
         return context
 
-class TransactionForm(forms.ModelForm):
+class TransactionForm(ModelForm):
     class Meta:
         model = Transaction
 
-class AccountingView(FamilyMixin, MonthArchiveView):
+class AccountingView(MonthArchiveView):
     template_name = 'budget/transaction_list.html'
     queryset = Transaction.objects.order_by('date')
     date_field = 'date'
@@ -75,80 +75,80 @@ class TransactionSuggestion(object):
 def AccountingDefaultView(req):
     return HttpResponseRedirect(reverse_lazy('accounting', args = ( date.today().year, date.today().month )))
 
-class TransactionDelete(FamilyMixin, DeleteView):
+class TransactionDelete(DeleteView):
     model = Transaction
     template_name = 'budget/generic_form.html'
 
     def get_success_url(self, *args, **kwargs):
-        return reverse_lazy('accounting_main', self.family)
+        return reverse_lazy('accounting_main')
 
-class TransactionUpdate(FamilyMixin, UpdateView):
+class TransactionUpdate(UpdateView):
     model = Transaction
     template_name = 'budget/generic_form.html'
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('accounting', self.family,
+        return reverse_lazy('accounting',
                 kwargs = { 'year': self.object.date.year, 'month': self.object.date.month})
 
-class TransactionCreate(FamilyMixin, CreateView):
+class TransactionCreate(CreateView):
     model = Transaction
     template_name = 'budget/generic_form.html'
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('accounting', self.family,
+        return reverse_lazy('accounting', 
                 kwargs = { 'year': self.object.date.year, 'month': self.object.date.month})
 
-class BudgetForm(forms.ModelForm):
-    copy_from = forms.ModelChoiceField(queryset=Budget.objects.all())
+class BudgetForm(ModelForm):
+    copy_from = ModelChoiceField(queryset=Budget.objects.all(), required=False)
     class Meta:
         model = Budget
 
-class BudgetCreate(FamilyMixin, CreateView):
+class BudgetCreate(CreateView):
     form_class = BudgetForm
     template_name = 'budget/generic_form.html'
 
-    def form_valid(self, *args, **kwargs):
-        redirect = super(BudgetCreate, self).form_valid(*args, **kwargs)
-        copy_from = args[0].cleaned_data['copy_from']
+    def form_valid(self, form, *args, **kwargs):
+        valid = super(BudgetCreate, self).form_valid(form, *args, **kwargs)
+        copy_from = form.cleaned_data['copy_from']
         if copy_from is not None:
             for e in copy_from.entry_set.all():
                 e.pk = None
                 e.budget = self.object
                 e.save()
-        return redirect
+        return valid
 
     def get_success_url(self, *args, **kwargs):
-        return reverse_lazy('budget_main', self.family)
+        return reverse_lazy('budget_main')
 
-class CategoryCreate(FamilyMixin, CreateView):
+class CategoryCreate(CreateView):
     model = Category
     template_name = 'budget/generic_form.html'
 
     def get_success_url(self, *args, **kwargs):
-        return reverse_lazy('budget_main', self.family)
+        return reverse_lazy('budget_main')
 
-class CategoryChange(FamilyMixin, UpdateView):
+class CategoryChange(UpdateView):
     model = Category
     template_name = 'budget/generic_form.html'
 
     def get_success_url(self, *args, **kwargs):
-        return reverse_lazy('budget_main', self.family)
+        return reverse_lazy('budget_main')
 
-class CategoryDelete(FamilyMixin, DeleteView):
+class CategoryDelete(DeleteView):
     model = Category
     template_name = 'budget/generic_form.html'
 
     def get_success_url(self, *args, **kwargs):
-        return reverse_lazy('budget_main', self.family)
+        return reverse_lazy('budget_main')
 
-class EntryDelete(FamilyMixin, DeleteView):
+class EntryDelete(DeleteView):
     model = Entry
     template_name = 'budget/generic_form.html'
 
     def get_success_url(self, *args, **kwargs):
-        return reverse_lazy('budget_main', self.family)
+        return reverse_lazy('budget_main')
 
-class EntryCreate(FamilyMixin, CreateView):
+class EntryCreate(CreateView):
     model = Entry
     template_name = 'budget/generic_form.html'
 
@@ -160,13 +160,9 @@ class EntryCreate(FamilyMixin, CreateView):
             self.budget = form.instance.budget.pk
         return super(EntryCreate, self).form_valid(form)
 
-class EntryUpdate(FamilyMixin, UpdateView, DeletionMixin):
+class EntryUpdate(UpdateView, DeletionMixin):
     model = Entry
     template_name = 'budget/generic_form.html'
-
-    def delete(self, r, *args, **kwargs):
-        import pdb;pdb.set_trace()
-        return super(EntryUpdate, self).delete(r, *args, **kwargs)
 
     def get_success_url(self, **kwargs):
         return reverse('budget', kwargs={'pk': self.budget})
@@ -180,10 +176,10 @@ def daterange(start_date, end_date):
     for n in range(int ((end_date - start_date).days)):
         yield start_date + timedelta(n)
 
-class CompareForm(forms.Form):
-    budget = forms.ModelChoiceField(Budget.objects.order_by('-pk'))
-    date_from = forms.DateField()
-    date_to = forms.DateField()
+class CompareForm(Form):
+    budget = ModelChoiceField(Budget.objects.order_by('-pk'))
+    date_from = DateField()
+    date_to = DateField()
 
 class Comparison(object):
     def __init__(self, date_from, date_to, entry):

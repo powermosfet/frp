@@ -16,7 +16,7 @@ class FamilyMember(models.Model):
 
 def create_family_member(*args, **kwargs):
     u = kwargs['instance']
-    if not u.familymember:
+    if not hasattr(u, 'familymember'):
         fm = FamilyMember()
         fm.user = u
         fm.save()

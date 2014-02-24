@@ -13,7 +13,7 @@
         </tr>
         {% for entry in entries %}
         <tr>
-          <td><a href="{% url 'entry_update' family entry.pk %}">{{ entry.category }}</a></td>
+          <td><a href="{% url 'entry_update' entry.pk %}">{{ entry.category }}</a></td>
           <td class='currencyDisplay'>{{ entry.amount|two_decimals }}</td>
           <td>{{ entry.payments_per_year }}</td>
           <td class='currencyDisplay {{ entry.amount_per_month|amount_css_class }}'>{{ entry.amount_per_month|two_decimals }}</td>
@@ -26,7 +26,7 @@
             <td class="currencyDisplay result_row {{ object.result|amount_css_class }}">{{ object.result|two_decimals }}</td>
         </tr>
         <tr>
-          <form action='{% url 'entry_create' family %}' method='POST'>{% csrf_token %}
+          <form action='{% url 'entry_create' %}' method='POST'>{% csrf_token %}
             <input name='budget' type='hidden' value='{{ object.pk }}' />
             <td>
               <select class='select' class='select' name='category' >
@@ -52,11 +52,11 @@
   <ul>
     {% for cat in categories %}
     <li>
-      <a href="{% url 'category_change' family cat.pk %}">{{ cat }}</a>
+      <a href="{% url 'category_change' cat.pk %}">{{ cat }}</a>
     </li>
     {% endfor %}
     <li>
-    <form action="{% url 'category_create' family %}" method="get"><input type="submit" value="New" /></form>
+    <form action="{% url 'category_create' %}" method="get"><input type="submit" value="New" /></form>
     </li>
   </ul>
 </p>
@@ -64,10 +64,10 @@
   <h3>Budgets:</h3>
   <ul>
     {% for b in budgets %}
-    <a href='{% url 'budget' family b.pk %}'><li>{{ b }}</li></a>
+    <a href='{% url 'budget' b.pk %}'><li>{{ b }}</li></a>
     {% endfor %}
     <li>
-    <form action="{% url 'budget_create' family %}" method="get"><input type="submit" value="New" /></form>
+    <form action="{% url 'budget_create' %}" method="get"><input type="submit" value="New" /></form>
     </li>
   </ul>
 </p>
