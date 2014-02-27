@@ -36,6 +36,7 @@ class BudgetView(DetailView):
 class TransactionForm(ModelForm):
     class Meta:
         model = Transaction
+        exclude = [ 'family' ]
 
 class AccountingView(MonthArchiveView):
     template_name = 'budget/transaction_list.html'
@@ -92,7 +93,15 @@ class TransactionUpdate(UpdateView):
 
 class TransactionCreate(CreateView):
     model = Transaction
+    form_class = TransactionForm
     template_name = 'budget/generic_form.html'
+
+    def form_valid(self, form, *args, **kwargs):
+        self.object = form.save(commit = False)
+        family_id = int( self.request.session['family'] )
+        self.object.family = Family.objects.get(pk = family_id)
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('accounting', 
@@ -100,29 +109,57 @@ class TransactionCreate(CreateView):
 
 class BudgetForm(ModelForm):
     copy_from = ModelChoiceField(queryset=Budget.objects.all(), required=False)
+
     class Meta:
         model = Budget
+        exclude = [ 'family' ]
 
 class BudgetCreate(CreateView):
     form_class = BudgetForm
     template_name = 'budget/generic_form.html'
 
+
     def form_valid(self, form, *args, **kwargs):
-        valid = super(BudgetCreate, self).form_valid(form, *args, **kwargs)
+        self.object = form.save(commit = False)
+        family_id = int( self.request.session['family'] )
+        self.object.family = Family.objects.get(pk = family_id)
         copy_from = form.cleaned_data['copy_from']
         if copy_from is not None:
             for e in copy_from.entry_set.all():
                 e.pk = None
                 e.budget = self.object
                 e.save()
-        return valid
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self, *args, **kwargs):
         return reverse_lazy('budget_main')
 
+class CategoryForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(CategoryForm, self).__init__(*args, **kwargs)
+        self.fields['parent'].queryset = Category.objects.filter(family = self.instance.family)
+
+    class Meta:
+        model = Category
+        exclude = [ 'family' ]
+
 class CategoryCreate(CreateView):
     model = Category
+    form_class = CategoryForm
     template_name = 'budget/generic_form.html'
+
+    def get_form_kwargs(self):
+        c = Category()
+        c.family = Family.objects.get(pk = self.request.session['family'])
+        return { 'instance': c }
+
+    def form_valid(self, form, *args, **kwargs):
+        self.object = form.save(commit = False)
+        family_id = int( self.request.session['family'] )
+        self.object.family = Family.objects.get(pk = family_id)
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self, *args, **kwargs):
         return reverse_lazy('budget_main')
