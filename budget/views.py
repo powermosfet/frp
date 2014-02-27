@@ -108,16 +108,23 @@ class TransactionCreate(CreateView):
                 kwargs = { 'year': self.object.date.year, 'month': self.object.date.month})
 
 class BudgetForm(ModelForm):
-    copy_from = ModelChoiceField(queryset=Budget.objects.all(), required=False)
+    copy_from = ModelChoiceField(queryset = Budget.objects.all(), required=False)
+
+    def __init__(self, *args, **kwargs):
+        family_pk = kwargs.pop('family')
+        super(BudgetForm, self).__init__(*args, **kwargs)
+        self.fields['copy_from'].queryset = Budget.objects.filter(family = family_pk)
 
     class Meta:
         model = Budget
         exclude = [ 'family' ]
 
 class BudgetCreate(CreateView):
-    form_class = BudgetForm
     template_name = 'budget/generic_form.html'
+    form_class = BudgetForm
 
+    def get_form_kwargs(self):
+        return { 'family': self.request.session['family'] }
 
     def form_valid(self, form, *args, **kwargs):
         self.object = form.save(commit = False)
