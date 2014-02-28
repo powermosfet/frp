@@ -11,7 +11,7 @@
       </ul>
       </nav>
       <div>
-          Hello, {{ user }}!
+          {{ user }}//{{ request.session.family_name }}
           <a href="{% url 'logout' %}">[Log out]</a>
       </div>
   </div>

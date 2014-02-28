@@ -12,6 +12,8 @@ class LoginForm(AuthenticationForm):
 
 def family_login(request, *args, **kwargs):
     if request.method == 'POST':
-        f = request.POST.get('family', None)
-        request.session['family'] = f
+        pk = request.POST.get('family', None)
+        f = Family.objects.get(pk = pk)
+        request.session['family'] = pk
+        request.session['family_name'] = f.name
     return login(request, *args, **kwargs)

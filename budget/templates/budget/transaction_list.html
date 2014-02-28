@@ -3,14 +3,8 @@
 {% load filters %}
 {% load static %}
 
-{% block head %}
-<script >month = new Date({{ month.year }}, {{ month.month }}, 1);</script>
-{% endblock %}
-
 {% block main %}
-<h3><a href="{% url 'accounting' previous_month.year previous_month.month %}">&lt;-</a>
-    {{ month|month }} {{ year }}
-    <a href="{% url 'accounting' next_month.year next_month.month %}">-&gt;</a></h3>
+<h3>Accounting</h3>
     <div id='transaction_entry'>
         <div id='transaction_form'>
             <form action="{% url 'transaction_create' %}" method="POST">{% csrf_token %}

@@ -38,40 +38,15 @@ class TransactionForm(ModelForm):
         model = Transaction
         exclude = [ 'family' ]
 
-class AccountingView(MonthArchiveView):
+class AccountingView(ListView):
     template_name = 'budget/transaction_list.html'
-    queryset = Transaction.objects.order_by('date')
-    date_field = 'date'
-    allow_future = True
-    allow_empty = True
+    queryset = Transaction.objects.order_by('-date')[:10]
 
     def get_context_data(self, **kwargs):
         context = super(AccountingView, self).get_context_data(**kwargs)
-        context['calendar'] = self.build_calendar()
         context['form'] = TransactionForm()
+        context['form'].fields['category'].queryset = Category.objects.filter(family = self.request.session['family'])
         return context
-
-    def build_calendar(self):
-        calendar = []
-        week = [ 0 for x in range(7) ]
-        one_day = timedelta(1)
-        first_day = date(int(self.get_year()), int(self.get_month()), 1)
-        last_day = self.get_next_month(first_day)
-        for d in daterange(first_day, last_day):
-            week[d.weekday()] = d.day
-            if d.weekday() >= 6:
-                calendar.append(week)
-                week = [ 0 for x in range(7) ]
-        if any([ x != 0 for x in week ]):
-            calendar.append(week)
-        return calendar
-    
-class TransactionSuggestion(object):
-    def __init__(self, category, comment, amount, date):
-        self.category = category
-        self.comment = comment
-        self.amount = amount
-        self.date = date
 
 def AccountingDefaultView(req):
     return HttpResponseRedirect(reverse_lazy('accounting', args = ( date.today().year, date.today().month )))
