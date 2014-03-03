@@ -1,3 +1,4 @@
 dj-static==0.0.5
+gunicorn==18.0
 pystache==0.5.3
 static==1.0.2
