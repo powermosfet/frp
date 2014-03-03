@@ -109,7 +109,7 @@ LOGIN_URL = '/login/'
 ROOT_URLCONF = 'frp.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'frp.wsgi.application'
+WSGI_APPLICATION = 'frp.wsgi'
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, "templates"),
