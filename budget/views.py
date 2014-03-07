@@ -50,6 +50,7 @@ class AccountingView(ListView):
 
 class TransactionArchive(MonthArchiveView):
     model = Transaction
+    date_field = 'date'
 
 class TransactionDelete(DeleteView):
     model = Transaction
