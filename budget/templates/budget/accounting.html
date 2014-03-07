@@ -4,7 +4,15 @@
 {% load static %}
 
 {% block main %}
-<h3>Month Archive</h3>
+<h3>Accounting</h3>
+    <div id='transaction_entry'>
+        <div id='transaction_form'>
+            <form action="{% url 'transaction_create' %}" method="POST">{% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Save" />
+            </form>
+        </div>
+    </div>
     <table class="datagrid">
     <tr><th>Date</th><th>Category</th><th>Comment</th><th>Amount</th></tr>
       {% for transaction in object_list %}
@@ -19,4 +27,12 @@
 {% endblock %}
 
 {% block side_menu %}
+<p>
+<h3>Suggestions:</h3>
+<ul>
+    {% for sugg in suggestions %}
+    <a href="" onclick="inject_date();inject_category();inject_amount()"><li>{{ sugg }}</li></a>
+    {% endfor %}
+</ul>
+</p>
 {% endblock %}

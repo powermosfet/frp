@@ -39,7 +39,7 @@ class TransactionForm(ModelForm):
         exclude = [ 'family' ]
 
 class AccountingView(ListView):
-    template_name = 'budget/transaction_list.html'
+    template_name = 'budget/accounting.html'
     queryset = Transaction.objects.order_by('-date')[:10]
 
     def get_context_data(self, **kwargs):
