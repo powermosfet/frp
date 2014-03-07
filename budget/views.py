@@ -48,8 +48,8 @@ class AccountingView(ListView):
         context['form'].fields['category'].queryset = Category.objects.filter(family = self.request.session['family'])
         return context
 
-def AccountingDefaultView(req):
-    return HttpResponseRedirect(reverse_lazy('accounting', args = ( date.today().year, date.today().month )))
+class TransactionArchive(MonthView):
+    model = Transaction
 
 class TransactionDelete(DeleteView):
     model = Transaction
