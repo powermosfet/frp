@@ -48,7 +48,7 @@ class AccountingView(ListView):
         context['form'].fields['category'].queryset = Category.objects.filter(family = self.request.session['family'])
         return context
 
-class TransactionArchive(MonthView):
+class TransactionArchive(MonthArchiveView):
     model = Transaction
 
 class TransactionDelete(DeleteView):
