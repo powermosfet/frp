@@ -79,8 +79,7 @@ class TransactionCreate(CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('accounting', 
-                kwargs = { 'year': self.object.date.year, 'month': self.object.date.month})
+        return reverse_lazy('accounting')
 
 class BudgetForm(ModelForm):
     copy_from = ModelChoiceField(queryset = Budget.objects.all(), required=False)
