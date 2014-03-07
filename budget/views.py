@@ -49,7 +49,8 @@ class AccountingView(ListView):
         return context
 
 class TransactionArchive(MonthArchiveView):
-    model = Transaction
+    template_name = 'budget/transaction_list.html'
+    queryset = Transaction.objects.order_by('date')
     date_field = 'date'
 
 class TransactionDelete(DeleteView):
