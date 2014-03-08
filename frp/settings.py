@@ -22,7 +22,7 @@ MANAGERS = ADMINS
 
 import dj_database_url
 DATABASES = {
-    'default': dj_database_url.config()
+    'default': dj_database_url.config(default='postgres://frp@localhost:5432/frp_db')
 }
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
