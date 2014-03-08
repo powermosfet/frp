@@ -3,7 +3,8 @@
 {% load filters %}
 
 {% block main %}
-      <h3>{{ object }} [{{ object.timestamp|date:"SHORT_DATE_FORMAT" }}]</h3>
+  {% if object %}
+      <h3>{{ object }} </h3>
       <table class='datagrid'>
         <tr>
           <th>Category</th>
@@ -44,6 +45,9 @@
           </form>
         </tr>
       </table>
+      {% else %}
+      <p>No budgets</p>
+    {% endif %}
 {% endblock %}
 
 {% block side_menu %}

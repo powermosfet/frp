@@ -17,11 +17,10 @@ class BudgetView(DetailView):
     model = Budget
 
     def get_object(self, queryset=None):
+        obj = None
         if 'pk' not in self.kwargs.keys():
             if Budget.objects.count() > 0:
-                obj = Budget.objects.order_by('-pk')[0]
-            else:
-                obj = Budget()
+                obj = Budget.objects.filter(family = self.request.session['family']).first()
         else:
             obj = super(BudgetView, self).get_object(queryset)
         return obj
@@ -30,7 +29,8 @@ class BudgetView(DetailView):
         context = super(BudgetView, self).get_context_data(*args, **kwargs)
         context['categories'] = Category.objects.filter(family = self.request.session['family']).order_by('string')
         context['budgets'] = Budget.objects.filter(family = self.request.session['family'])
-        context['entries'] = self.get_object().entry_set.order_by('category__string')
+        if self.get_object():
+            context['entries'] = self.get_object().entry_set.order_by('category__string')
         return context
 
 class TransactionForm(ModelForm):
