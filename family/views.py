@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
 from django.views.generic import *
 from django.contrib.auth.views import login
 from django.contrib.auth.forms import UserCreationForm
@@ -33,3 +34,16 @@ class Profile(DetailView):
     model = User
     slug_field = 'username'
     template_name = 'family/profile.html'
+
+class FamilyCreateBase(CreateView):
+    def get_form(self, form, *args, **kwargs):
+        f = super(FamilyCreateBase, self).get_form(form, *args, **kwargs)
+        f.fields.pop('family')
+        return f
+
+    def form_valid(self, form, *args, **kwargs):
+        self.object = form.save(commit=False)
+        fam_pk = self.request.session['family']
+        self.object.family = Family.objects.get(pk = fam_pk)
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())

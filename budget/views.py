@@ -118,34 +118,10 @@ class BudgetCreate(CreateView):
     def get_success_url(self, *args, **kwargs):
         return reverse_lazy('budget_main')
 
-class CategoryForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(CategoryForm, self).__init__(*args, **kwargs)
-        self.fields['parent'].queryset = Category.objects.filter(family = self.instance.family)
-
-    class Meta:
-        model = Category
-        exclude = [ 'family' ]
-
-class CategoryCreate(CreateView):
+class CategoryCreate(FamilyCreateBase):
     model = Category
-    form_class = CategoryForm
     template_name = 'budget/generic_form.html'
-
-    def get_form_kwargs(self):
-        c = Category()
-        c.family = Family.objects.get(pk = self.request.session['family'])
-        return { 'instance': c }
-
-    def form_valid(self, form, *args, **kwargs):
-        self.object = form.save(commit = False)
-        family_id = int( self.request.session['family'] )
-        self.object.family = Family.objects.get(pk = family_id)
-        self.object.save()
-        return HttpResponseRedirect(self.get_success_url())
-
-    def get_success_url(self, *args, **kwargs):
-        return reverse_lazy('budget_main')
+    success_url = reverse_lazy('budget_main')
 
 class CategoryChange(UpdateView):
     model = Category
