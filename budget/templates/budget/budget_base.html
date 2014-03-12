@@ -1,12 +1,16 @@
-
 {% extends 'base.html' %}
+{% load assignment_tags %}
 
 {% block caption %}Budget | {{ block.super }}{% endblock %}
 
 {% block header %}Budget{% endblock %}
+
 {% block appmenu %}
+{% current_year as year %}
+{% current_month as month %}
 <li><a href="{% url 'budget_main' %}">[budget]</a></li>
-<li><a href="{% url 'accounting_main' %}">[accounting]</a></li>
+<li><a href="{% url 'accounting' %}">[accounting]</a></li>
+<li><a href="{% url 'transaction_archive' year month %}">[month archive]</a></li>
 <li><a href="{% url 'compare' %}">[compare]</a></li>
 {% endblock %}
 
