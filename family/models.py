@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import *
 from django.db.models.signals import post_save
+from django.db.utils import OperationalError
 
 class Family(models.Model):
     name = models.CharField(max_length = 80)
@@ -17,8 +18,11 @@ class FamilyMember(models.Model):
 def create_family_member(*args, **kwargs):
     u = kwargs['instance']
     if not hasattr(u, 'familymember'):
-        fm = FamilyMember()
-        fm.user = u
-        fm.save()
+        try:
+            fm = FamilyMember()
+            fm.user = u
+            fm.save()
+        except OperationalError:
+            pass
 
 post_save.connect(create_family_member, sender = User)
