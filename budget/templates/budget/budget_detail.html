@@ -1,53 +1,21 @@
 {% extends 'budget/budget_base.html' %}
 
 {% load filters %}
+{% load static %}
 
 {% block main %}
   {% if object %}
-      <h3>{{ object }} </h3>
-      <table class='datagrid'>
-        <tr>
-          <th>Category</th>
-          <th class='currencyDisplay'>Amount</th>
-          <th>Payments per year</th>
-          <th class='currencyDisplay'>Per month</th>
-        </tr>
-        {% for entry in entries %}
-        <tr>
-          <td><a href="{% url 'entry_update' entry.pk %}">{{ entry.category }}</a></td>
-          <td class='currencyDisplay'>{{ entry.amount|two_decimals }}</td>
-          <td>{{ entry.payments_per_year }}</td>
-          <td class='currencyDisplay {{ entry.amount_per_month|amount_css_class }}'>{{ entry.amount_per_month|two_decimals }}</td>
-        </tr>
-        {% endfor %}
-        <tr>
-          <td class="result_row">Result</td>
-          <td />
-          <td />
-            <td class="currencyDisplay result_row {{ object.result|amount_css_class }}">{{ object.result|two_decimals }}</td>
-        </tr>
-        <tr>
-          <form action='{% url 'entry_create' %}' method='POST'>{% csrf_token %}
-            <input name='budget' type='hidden' value='{{ object.pk }}' />
-            <td>
-              <select class='select' class='select' name='category' >
-                {% for cat in categories %}
-                <option value='{{ cat.pk }}'>{{ cat }}</option>
-                {% endfor %}
-              </select>
-            </td>
-            <td >
-              <input name='amount_abs' class='textbox' type='text' />
-            </div>
-            </td>
-            <td><input name='payments_per_year' class='textbox' type='text' /></td>
-            <td class='currencyDisplay'><button type='submit' class='addbutton'>Add</button></td>
-          </form>
-        </tr>
-      </table>
-      {% else %}
-      <p>No budgets</p>
-    {% endif %}
+    <script id='sap-ui-bootstrap'
+            src='{% static "openui5/sap-ui-core.js" %}'
+            data-sap-ui-theme='sap_bluecrystal'
+            data-sap-ui-libs='sap.ui.commons, sap.m'>
+    </script>
+    <script>
+      var object_pk = {{ object }};
+    </script>
+    <script src="{% static 'budget/budget_detail.js' %}" ></script>
+  {% endif %}
+  <div id="table" ></div>
 {% endblock %}
 
 {% block side_menu %}
