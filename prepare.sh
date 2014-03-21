@@ -1,5 +1,3 @@
-#!/bin/bash
-
 virtualenv -p `which python2` --no-site-packages .
 source bin/activate
 pip install -r requirements.txt
