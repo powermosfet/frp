@@ -8,3 +8,5 @@
 *.db
 local_settings.py
 *.swp
+Procfile_dev
+.sass-cache/

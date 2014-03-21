@@ -1,0 +1,290 @@
+* {
+	margin:			0;
+	padding:		0;
+	font-family: Perpetua, Baskerville, "Big Caslon", "Palatino Linotype", Palatino, "URW Palladio L", "Nimbus Roman No9 L", serif;;
+	font-size:		1.0em;
+    color: #F7F3E2;
+}
+
+a:link 		{ color: #F7F3E2; text-decoration: none; }
+a:visited 	{ color: #F7F3E2; text-decoration: none; }
+
+h1 {
+    color: #F7F3E2;
+}
+
+h2 {
+    color: #F7F3E2;
+}
+
+h3 {
+    color: 		#F7F3E2;
+    text-decoration:	underline;
+    margin-bottom:	1em;
+}
+
+select {
+	background:     #F2D27A;
+	color: black;
+	width: 15em;
+}
+
+option {
+	color: black;
+}
+
+.select {
+	width: 100%;
+	margin:			0.2em 0em;
+}
+
+form label {
+    display:		inline-block;
+    width:		10em;
+    margin-bottom:	0.5em;
+}
+
+input {
+	background:     #F2D27A;
+	color:		black;
+}
+
+.textbox {
+    color:  black;
+	margin:			0.2em 0.2em 0.2em 0em;
+	width: 15em;
+}
+
+.addbutton {
+    color:          black;
+	margin:			0.2em 0em;
+	width: 			2.5em;
+}
+
+.form-flex {
+    display: -moz-box;
+    display: -webkit-box;
+    -moz-orientation: vertical;
+    -webkit-orientation: vertical;
+    width:	100%;
+}
+
+.form-flex-inner {
+    -moz-box-flex: 1;
+    -webkit-box-flex: 1;
+    box-flex: 1;
+}
+
+.separator {
+	width: 		0.4em;
+}
+
+body {
+    background-image: url('/static/img/pattern8-pattern-72c.png') ;
+	text-align: center;
+}
+
+#wrapper {
+	width:		90%;
+    border-radius:         1em;
+	display:			-moz-box;
+	display:			-webkit-box;
+	-moz-box-orient:	vertical;
+	-webkit-box-orient:	vertical;
+	-moz-box-flex:		1;
+	-webkit-box-flex:	1;
+    max-width:          70em;
+	text-align:	left;
+	background:	rgba(0, 0, 0, 0.7);
+	margin:		1em auto;
+	padding:	1em;
+}
+
+header {
+	font-size:		1.5em;
+	padding-bottom:	2em;
+opacity: 1;
+}
+
+nav {
+}
+
+nav li {
+	display:	inline-block;
+	list-style:	none;
+	border:		0.071429em solid #F7F3E2;
+	font-weight:bold;
+	padding:	0.1em 0.3em;
+	width:		15%;
+	background: #474747;
+    opacity:    1;
+	color:		#F7F3E2;
+}
+
+#container {
+	width:				100%;
+	display:			-moz-box;
+	display:			-webkit-box;
+	-moz-box-orient:	horizontal;
+	-webkit-box-orient:	horizontal;
+	padding:	1em 0em;
+}
+
+section {
+	display:	block;
+	-moz-box-flex:		1;
+	-webkit-box-flex:	1;
+	width:	80%;
+}
+
+article {
+	width:		100%;
+	vertical-align:	top;
+}
+
+aside {
+	display:	block;
+	width:		15em;
+	-moz-align:	stretch;
+	-webkit-align:	stretch;
+	padding:	0.5em;
+    border: 1px solid #F7F3E2;
+}
+
+aside p {
+	margin-bottom:	1em;
+}
+
+aside li { font-size:	0.8em; }
+aside li, aside li a {
+	display:	block;
+	list-style:	none;
+	font-family: "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+}
+
+aside table {
+	width:	100%;
+}
+
+ul.appmenu {
+	margin-bottom:	2em;
+}
+
+ul.appmenu li {
+	display:	inline-block;
+	list-style:	none;
+}
+
+table.datagrid {
+	border-collapse:	collapse;
+	border:		0.071429em solid #F7F3E2;
+	margin:		0.142857em auto;
+	width:		90%;
+}
+
+table.datagrid td, table.datagrid th, table.datagrid a {
+	font-family: "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+    color:	black;
+}
+
+table.datagrid td {
+}
+
+table.datagrid td, table.datagrid th {
+	font-size:		0.8em;
+	border:			0.07em solid black;
+	background:		#F2D27A;
+	padding:		0em 0.5em;
+}
+table.datagrid th {
+	background:     #A9C598;
+	color:		black;
+}
+
+footer {
+	text-align:	center;
+	font:		0.7em verdana, sans-serif;
+}
+
+.currencyDisplay {
+	text-align:	right;
+}
+
+#calendar {
+	margin-left:	3em;
+}
+
+#calendar td, #calendar th{
+	cursor: 	pointer;
+	width:		1.5em;
+	height:		1.5em;
+	border:		1px solid #F7F3E2;
+	margin:		0;
+	text-align:	center;
+}
+
+#transaction_entry {
+	display:			-moz-box;
+	display:			-webkit-box;
+	-moz-box-orient:	horizontal;
+	-webkit-box-orient:	horizontal;
+}
+
+#transaction_form p {
+    display: table-row;
+    width:	100%;
+}
+
+.negative {
+    color:	red !important;
+}
+
+.errorlist {
+    background:	red;
+    width: 20%;
+}
+.errorlist li {
+    color:	black;
+    list-style:	none;
+}
+
+.result_row {
+    font-weight: bold;
+    // text-decoration:	underline;
+}
+
+.status_good, .status_ok, .status_bad {
+    height:	0.8em;
+    width:	0.8em;
+    border:	1px solid black;
+    display:	inline-block;
+    vertical-align: middle;
+}
+
+.status_good { background: green; }
+.status_ok   { background: yellow; }
+.status_bad  { background: red; }
+
+.important-datagrid-cell {
+    font-weight:	bold;
+}
+
+form {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.login-box {
+    margin: 3em 17em;
+    background: black;
+    border-radius: 15px;
+    padding: 1em 3em;
+}
+
+.navbar {
+    display: -moz-box;
+}
+
+.navbar nav {
+    -moz-box-flex: 1;
+}
