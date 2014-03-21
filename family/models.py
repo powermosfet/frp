@@ -22,7 +22,7 @@ def create_family_member(*args, **kwargs):
             fm = FamilyMember()
             fm.user = u
             fm.save()
-        except django.db.utils.OperationalError:
+        except OperationalError:
             pass
 
 post_save.connect(create_family_member, sender = User)
