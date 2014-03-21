@@ -17,8 +17,11 @@ class FamilyMember(models.Model):
 def create_family_member(*args, **kwargs):
     u = kwargs['instance']
     if not hasattr(u, 'familymember'):
-        fm = FamilyMember()
-        fm.user = u
-        fm.save()
+        try:
+            fm = FamilyMember()
+            fm.user = u
+            fm.save()
+        except django.db.utils.OperationalError:
+            pass
 
 post_save.connect(create_family_member, sender = User)
