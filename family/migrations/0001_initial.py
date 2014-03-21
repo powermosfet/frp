@@ -30,7 +30,17 @@ class Migration(SchemaMigration):
             ('family', models.ForeignKey(orm[u'family.family'], null=False))
         ))
         db.create_unique(m2m_table_name, ['familymember_id', 'family_id'])
-
+        
+        if not db.dry_run:
+            for u in orm['auth.User'].objects.all():
+                f = orm.Family()
+                f.name = "{0}'s family".format(u.username)
+                f.save()
+                fm = orm.FamilyMember()
+                fm.user = u
+                fm.save()
+                fm.families.add(f)
+                fm.save()
 
     def backwards(self, orm):
         # Deleting model 'Family'
