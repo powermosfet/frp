@@ -1,5 +1,7 @@
 # Django settings for frp project.
 import os
+import dj_database_url
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Static asset configuration
@@ -20,7 +22,6 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-import dj_database_url
 DATABASES = {
     'default': dj_database_url.config(default='postgres://frp@localhost:5432/frp_db')
 }
@@ -123,6 +124,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'gunicorn',
     'south',
+    'piston',
     'wishlist',
     'budget',
     'filters',

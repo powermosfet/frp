@@ -96,10 +96,7 @@ var model = [
 	"per_month": -500.00
 } ];
 
-// var budgetTable = new sap.m.Table();
-var budgetTable = new sap.m.Table({
-	    headerText: "Budget detail",
-});
+var budgetTable = new sap.m.Table();
 
 budgetTable.setModel(new sap.ui.model.json.JSONModel(model));
 budgetTable.placeAt("table");

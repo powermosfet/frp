@@ -10,6 +10,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', include('wishlist.urls')),
+    url(r'^api/', include('api.urls')),
     url(r'^wishlist/', include('wishlist.urls')),
     url(r'^budget/', include('budget.urls')),
     url(r'^login/', 'family.views.family_login', {'template_name': 'login.html', 'authentication_form':LoginForm}, name = 'login'),
