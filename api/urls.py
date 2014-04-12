@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from piston.resource import Resource
-from piston.authentication import HttpBasicAuthentication
+from api.authentication import *
 from api.handlers import *
 
 auth = HttpBasicAuthentication(realm="frp")
