@@ -51,15 +51,12 @@ class TransactionDelete(DeleteView):
     template_name = 'budget/generic_form.html'
 
     def get_success_url(self, *args, **kwargs):
-        return reverse_lazy('accounting_main')
+        return reverse_lazy('accounting')
 
 class TransactionUpdate(UpdateView):
     model = Transaction
     template_name = 'budget/generic_form.html'
-
-    def get_success_url(self, **kwargs):
-        return reverse_lazy('accounting',
-                kwargs = { 'year': self.object.date.year, 'month': self.object.date.month})
+    success_url = reverse_lazy('accounting')
 
 class TransactionCreate(FamilyCreateBase):
     model = Transaction
